@@ -1,0 +1,111 @@
+name: Release
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Set up Node.js 18
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+    
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+    
+    - name: Install build dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y build-essential gcc make
+    
+    - name: Build all components
+      run: |
+        # Build React applications
+        cd ofasp-refactor && npm ci && npm run build && cd ..
+        cd asp-manager && npm ci && npm run build && cd ..
+        
+        # Build dslock_suite
+        cd ofasp-refactor/dslock_suite && make clean && make && cd ../..
+        
+        # Prepare Python services
+        cd ofasp-refactor/python-service
+        pip install -r requirements.txt || echo "No requirements.txt found"
+        cd ../..
+    
+    - name: Create release package
+      run: |
+        mkdir -p release-package
+        
+        # Copy built applications
+        cp -r ofasp-refactor/build release-package/ofasp-refactor-web
+        cp -r asp-manager/build release-package/asp-manager-web
+        
+        # Copy dslock_suite binaries
+        mkdir -p release-package/dslock_suite
+        cp ofasp-refactor/dslock_suite/build/* release-package/dslock_suite/
+        
+        # Copy Python services
+        cp -r ofasp-refactor/python-service release-package/
+        cp -r server release-package/
+        cp -r config release-package/
+        cp -r database release-package/
+        
+        # Copy documentation
+        cp README.md LICENSE ARCHITECTURE.md CONTRIBUTING.md release-package/
+        cp .env.example release-package/
+        
+        # Create archive
+        tar -czf enduroasp-${{ github.ref_name }}.tar.gz -C release-package .
+    
+    - name: Generate release notes
+      id: release_notes
+      run: |
+        echo "## EnduroASP ${{ github.ref_name }}" > release_notes.md
+        echo "" >> release_notes.md
+        echo "### What's New" >> release_notes.md
+        echo "- Legacy system migration platform" >> release_notes.md
+        echo "- COBOL/CL to modern language conversion" >> release_notes.md
+        echo "- EBCDIC dataset conversion tools" >> release_notes.md
+        echo "- SMED map viewer" >> release_notes.md
+        echo "- AI-powered management interface" >> release_notes.md
+        echo "- dslock_suite for safe file I/O" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### Components" >> release_notes.md
+        echo "- **OpenASP Refactor** (Port 3005): Main conversion platform" >> release_notes.md
+        echo "- **ASP Manager** (Port 3007): AI-powered management" >> release_notes.md
+        echo "- **Python EBCDIC Service** (Port 3003): Character conversion" >> release_notes.md
+        echo "- **API Server** (Port 8000): Backend services" >> release_notes.md
+        echo "- **dslock_suite**: File locking and I/O library" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### Installation" >> release_notes.md
+        echo "1. Download and extract the release package" >> release_notes.md
+        echo "2. Copy \`.env.example\` to \`.env\` and configure" >> release_notes.md
+        echo "3. Setup PostgreSQL database using \`database/\` scripts" >> release_notes.md
+        echo "4. Install dependencies and start services" >> release_notes.md
+        echo "" >> release_notes.md
+        echo "### Checksums" >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+        sha256sum enduroasp-${{ github.ref_name }}.tar.gz >> release_notes.md
+        echo "\`\`\`" >> release_notes.md
+    
+    - name: Create GitHub Release
+      uses: softprops/action-gh-release@v1
+      with:
+        name: EnduroASP ${{ github.ref_name }}
+        body_path: release_notes.md
+        files: |
+          enduroasp-${{ github.ref_name }}.tar.gz
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
