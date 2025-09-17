@@ -1,42 +1,5 @@
-# 🚀 OpenASP AX - 레거시 마이그레이션 플랫폼
-
-## ⚠️ **모든 AI CODING AGENT 필수 준수사항**
-
-### 🔥 **절대 금지 원칙 - NEVER HARDCODE**
-```
-❌ 절대 금지: "데모용", "임시로", "일단", "테스트용" 등의 핑계로 하드코딩
-❌ 절대 금지: 실제 파일 시스템 대신 목업(mock) 데이터 사용
-❌ 절대 금지: 에러 발생 시 우회 처리 (반드시 근본 원인 해결)
-❌ 절대 금지: 사용자 요구 파일 수와 다른 임의의 파일 수 처리
-
-✅ 필수 원칙: 모든 데이터는 실제 시스템에서 동적으로 로드
-✅ 필수 원칙: 사용자가 요구한 정확한 파일 수 처리 (1개도 빠짐없이)
-✅ 필수 원칙: 실제 파일 시스템과 화면 표시 완전 일치
-✅ 필수 원칙: 에러는 반드시 해결, 절대 우회 금지
-```
-
-### 📊 **실제 사례: 하드코딩으로 인한 심각한 문제**
-- **문제 상황**: AI Transform 페이지에서 실제 1,022개 파일 중 14개만 하드코딩으로 표시
-- **파급 효과**: 98.6% 기능 누락, 실제 업무 사용 불가능
-- **근본 원인**: "데모용이니까 하드코딩해도 된다"는 잘못된 사고방식
-- **교훈**: 이 프로젝트는 실제 레거시 마이그레이션용 업무 도구임
-
-### 🛡️ **재발방지 검증 체계**
-1. **파일 수 검증**: `find` 명령어 결과와 화면 표시 반드시 일치
-2. **내용 검증**: 실제 파일 내용과 화면 표시 내용 완전 일치
-3. **성능 검증**: 1,000+ 파일도 정상 처리 확인
-4. **에러 해결**: 500 에러 등 모든 에러는 근본 해결
-
-### 🔧 **올바른 구현 방법**
-- **백엔드 API**: Python Flask에 실제 파일 스캐닝 엔드포인트 구현
-- **대용량 처리**: 스트리밍, 페이지네이션으로 1,000+ 파일 처리
-- **실시간 연동**: 실제 파일 시스템 변경사항 즉시 반영
-- **완전한 기능**: 사용자 요구사항 100% 구현
-
----
-
 ## 개요
-OpenASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 오픈소스 기술로 마이그레이션하는 **실제 업무용** 통합 플랫폼입니다.
+EnduroASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 오픈소스 기술로 마이그레이션하는 **실제 업무용** 통합 플랫폼입니다.
 
 ## 🏗️ 프로젝트 구성
 
@@ -53,12 +16,12 @@ OpenASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 
 - **실행**: `FLASK_PORT=3003 python -c "from src.api.app import api; api.run()"`
 
 ### 3. [System API Server](./ofasp-refactor/server/) (포트 3004)
-- **목적**: OpenASP 시스템 관리 API
+- **목적**: EnduroASP 시스템 관리 API
 - **주요 기능**: 시스템 명령어 처리, 웹 인터페이스 연동
 - **기술**: Python, Flask
 - **실행**: `ASPMGR_WEB_PORT=3004 python aspmgr_web.py`
 
-### 4. [OpenASP Refactor](./ofasp-refactor/) (포트 3005)
+### 4. [EnduroASP Refactor](./ofasp-refactor/) (포트 3005)
 - **목적**: 코드 변환 및 리팩토링 도구, 멀티모달 AI 채팅
 - **주요 기능**: 
   - COBOL/CL 변환, EBCDIC 변환, AI 지원
@@ -92,7 +55,7 @@ OpenASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 
 - **기술**: Ollama, AI 모델 호스팅
 - **실행**: Chat 서비스를 통해 자동 시작
 
-### 9. [OpenASP DevOps](./ofasp-devops/) (포트 3016)
+### 9. [EnduroASP DevOps](./ofasp-devops/) (포트 3016)
 - **목적**: Enterprise급 CI/CD & 자동화 통합 모니터링 플랫폼
 - **주요 기능**: 
   - COBOL/CL 변환 엔진 (Java, Python, C, Shell)
@@ -128,7 +91,7 @@ OpenASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 
 ### 10. [Zabbix 모니터링 시스템] (포트 3015)
 - **웹 인터페이스**: http://localhost:3015
 - **로그인**: Admin / zabbix
-- **목적**: OpenASP AX 전체 시스템 모니터링 및 알림
+- **목적**: EnduroASP AX 전체 시스템 모니터링 및 알림
 
 #### 📊 모니터링 대상
 - **API Server** (포트 8000): HTTP 응답, 프로세스 상태
@@ -136,7 +99,7 @@ OpenASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 
 - **Python Service** (포트 3003): Flask 서비스 상태
 - **Refactor Service** (포트 3005): 코드 변환 서비스 상태
 - **Manager Service** (포트 3007): AI 관리 인터페이스 상태
-- **OpenASP DevOps** (포트 3016): CI/CD & 통합 모니터링 상태
+- **EnduroASP DevOps** (포트 3016): CI/CD & 통합 모니터링 상태
 - **로그 모니터링**: 
   - `/home/aspuser/app/logs/` (메인 로그)
   - `/home/aspuser/app/ofasp-refactor/logs/` (리팩터 로그)
@@ -152,12 +115,6 @@ OpenASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 
 호스트: localhost
 포트: 5432
 데이터베이스: zabbix
-사용자: zabbix
-패스워드: zabbix_password
-
-# 접속 방법
-su - postgres
-psql zabbix
 
 # 주요 테이블
 - users: Zabbix 사용자 정보
@@ -189,7 +146,7 @@ service zabbix-agent start|stop|restart|status
 
 # 설정 파일
 /etc/zabbix/zabbix_agentd.conf
-/etc/zabbix/zabbix_agentd.d/openasp.conf  # OpenASP 커스텀 파라미터
+/etc/zabbix/zabbix_agentd.d/EnduroASP.conf  # EnduroASP 커스텀 파라미터
 
 # 로그 파일
 /var/log/zabbix/zabbix_agentd.log
@@ -240,7 +197,7 @@ service php8.2-fpm start|stop|restart|status
 /home/aspuser/app/monitoring/scripts/
 
 # 서비스 상태 확인
-check_services.py  - 모든 OpenASP 서비스 HTTP 상태 체크
+check_services.py  - 모든 EnduroASP 서비스 HTTP 상태 체크
 
 # 로그 모니터링
 log_monitor.py     - 오류/경고 로그 감지 및 분석
@@ -253,7 +210,7 @@ check_abend.py     - ABEND CEE3204S 감지 및 자동 수정 트리거
 
 # 설정 파일
 /home/aspuser/app/monitoring/config/zabbix.conf
-/etc/zabbix/zabbix_agentd.d/openasp.conf  # ABEND 모니터링 파라미터
+/etc/zabbix/zabbix_agentd.d/EnduroASP.conf  # ABEND 모니터링 파라미터
 ```
 
 #### 🚨 알림 설정
@@ -273,7 +230,7 @@ check_abend.py     - ABEND CEE3204S 감지 및 자동 수정 트리거
 ## 🔄 ABEND 자동 감지 및 수정 시스템
 
 ### 🎯 통합 테스트 시나리오
-OpenASP AX 시스템은 **ABEND 발생 → Zabbix 감지 → DevOps CI/CD 자동 수정 → 정상화** 의 완전 자동화된 장애 대응 시스템을 구현합니다.
+EnduroASP AX 시스템은 **ABEND 발생 → Zabbix 감지 → DevOps CI/CD 자동 수정 → 정상화** 의 완전 자동화된 장애 대응 시스템을 구현합니다.
 
 ### 📋 ABEND 자동 대응 프로세스
 
@@ -284,8 +241,8 @@ OpenASP AX 시스템은 **ABEND 발생 → Zabbix 감지 → DevOps CI/CD 자동
 
 #### 2️⃣ **Zabbix 실시간 감지**
 - **감지 스크립트**: `check_abend.py` (60초 주기)
-- **Zabbix 파라미터**: `openasp.abend.check`, `openasp.abend.count`
-- **알림**: Zabbix UI의 "OpenASP AX" 호스트에서 ABEND 알림 표시
+- **Zabbix 파라미터**: `EnduroASP.abend.check`, `EnduroASP.abend.count`
+- **알림**: Zabbix UI의 "EnduroASP AX" 호스트에서 ABEND 알림 표시
 
 #### 3️⃣ **CI/CD 자동 수정 파이프라인**
 - **워크플로우**: ABEND Auto-Fix Pipeline (4단계)
@@ -305,7 +262,7 @@ OpenASP AX 시스템은 **ABEND 발생 → Zabbix 감지 → DevOps CI/CD 자동
 ### 🔧 **구성 파일**
 ```bash
 # ABEND 모니터링 설정
-/etc/zabbix/zabbix_agentd.d/openasp.conf
+/etc/zabbix/zabbix_agentd.d/EnduroASP.conf
 
 # 감지 스크립트
 /home/aspuser/app/monitoring/scripts/check_abend.py
@@ -358,7 +315,7 @@ FLASK_PORT=3003 python -c "from src.api.app import api; api.run()"
 cd ofasp-refactor/server
 ASPMGR_WEB_PORT=3004 python aspmgr_web.py
 
-# OpenASP Refactor
+# EnduroASP Refactor
 cd ofasp-refactor
 PORT=3005 npm start
 
@@ -442,13 +399,13 @@ curl -X POST http://localhost:3016/api/abend-test-scenario?action=start
 curl http://localhost:3000         # SMED Viewer
 curl http://localhost:3003/health  # Python 변환 서비스
 curl http://localhost:3004         # System API Server
-curl http://localhost:3005         # OpenASP Refactor
+curl http://localhost:3005         # EnduroASP Refactor
 curl http://localhost:3006/api/health # Chat API Server
 curl http://localhost:3007         # ASP Manager
 curl http://localhost:8000         # API Server
 curl http://localhost:3014/api/tags # Ollama Server
 curl http://localhost:3015         # Zabbix 모니터링
-curl http://localhost:3016         # OpenASP DevOps (CI/CD Workflow Visualizer)
+curl http://localhost:3016         # EnduroASP DevOps (CI/CD Workflow Visualizer)
 curl http://localhost:3011         # Prometheus
 curl http://localhost:3010         # Grafana
 ```
@@ -469,11 +426,11 @@ python3 /home/aspuser/app/monitoring/scripts/check_dslock.py --json
 python3 /home/aspuser/app/monitoring/scripts/check_abend.py --json  # ABEND 감지 테스트
 
 # Zabbix Agent 파라미터 테스트
-zabbix_agentd -t openasp.services.check
-zabbix_agentd -t openasp.service.api
-zabbix_agentd -t openasp.service.smed
-zabbix_agentd -t openasp.abend.check      # ABEND 감지 파라미터 테스트
-zabbix_agentd -t openasp.abend.count      # ABEND 카운트 파라미터 테스트
+zabbix_agentd -t EnduroASP.services.check
+zabbix_agentd -t EnduroASP.service.api
+zabbix_agentd -t EnduroASP.service.smed
+zabbix_agentd -t EnduroASP.abend.check      # ABEND 감지 파라미터 테스트
+zabbix_agentd -t EnduroASP.abend.count      # ABEND 카운트 파라미터 테스트
 
 # 데이터베이스 접속
 su - postgres -c "psql zabbix"
@@ -489,14 +446,14 @@ su - postgres -c "psql zabbix"
 ### 서비스 포트 구성
 - 3000: SMED Map Viewer (화면 맵 뷰어)
 - 3003: Python EBCDIC 변환 서비스
-- 3005: OpenASP Refactor 메인
+- 3005: EnduroASP Refactor 메인
 - 3007: ASP Manager
 - 3008: ASP Manager 백엔드
 - 3010: Grafana (모니터링 시각화)
 - 3011: Prometheus (메트릭 수집)
 - 3014: Ollama Server (AI 모델)
 - 3015: Zabbix (시스템 모니터링)
-- 3016: OpenASP DevOps (CI/CD & 모니터링)
+- 3016: EnduroASP DevOps (CI/CD & 모니터링)
 - 8000: API Server (통합 백엔드)
 
 ### 환경 변수
@@ -509,7 +466,7 @@ CODEPAGE_BASE_PATH=/home/aspuser/app/ofasp-refactor/public/codepages
 # System API Server
 ASPMGR_WEB_PORT=3004
 
-# OpenASP Refactor
+# EnduroASP Refactor
 PORT=3005
 
 # Chat API Server
@@ -695,7 +652,7 @@ iconv -f UTF-8 -t SHIFT_JIS input.sh > output.sh
 curl http://localhost:3000  # SMED Map Viewer
 curl http://localhost:3003  # Python 변환 서비스  
 curl http://localhost:3004  # System API Server
-curl http://localhost:3005  # OpenASP Refactor
+curl http://localhost:3005  # EnduroASP Refactor
 curl http://localhost:3006  # Chat API Server
 curl http://localhost:3007  # ASP Manager
 curl http://localhost:8000  # API Server
@@ -711,116 +668,3 @@ tail -f logs/api-server.log
 tail -f ofasp-refactor/logs/chat-api.log
 tail -f ofasp-refactor/logs/ollama.log
 ```
-
-### 문제 해결
-- **문자 깨짐**: LANG=ja_JP.sjis 환경에서 SHIFT_JIS 인코딩 확인
-- **포트 충돌**: `./master-stop.sh` 실행 후 `netstat -an | grep 300` 확인
-
-## 📋 프로그램 등록 및 catalog.json 관리
-
-### 🔧 **프로그램 등록 필수 조건**
-```
-⚠️ 중요: OpenASP에서 모든 프로그램은 실행 전에 catalog.json에 등록되어야 합니다.
-등록되지 않은 프로그램은 CALL 명령어로 실행할 수 없습니다.
-```
-
-### 📝 catalog.json 프로그램 등록 형식
-
-#### Java 프로그램 등록
-```json
-{
-  "DISK01": {
-    "TESTLIB": {
-      "CUINP001": {
-        "TYPE": "PGM",
-        "PGMTYPE": "JAVA",
-        "PGMNAME": "CUINP001",
-        "CLASSFILE": "CUINP001.class",
-        "DESCRIPTION": "Customer data input program for FB format SAM files",
-        "VERSION": "1.0",
-        "CREATED": "2025-07-24T17:04:00.000000Z",
-        "UPDATED": "2025-07-24T17:04:00.000000Z"
-      }
-    }
-  }
-}
-```
-
-#### COBOL 프로그램 등록
-```json
-{
-  "PAYROLL01": {
-    "TYPE": "PGM",
-    "PGMTYPE": "COBOL",
-    "PGMNAME": "PAYROLL01",
-    "SOURCEFILE": "PAYROLL01.cbl",
-    "EXECUTABLE": "PAYROLL01",
-    "DESCRIPTION": "Monthly payroll calculation",
-    "VERSION": "2.1",
-    "CREATED": "2025-07-21T10:00:00Z",
-    "UPDATED": "2025-07-21T10:00:00Z"
-  }
-}
-```
-
-#### Shell 프로그램 등록
-```json
-{
-  "test_shell": {
-    "TYPE": "PGM",
-    "PGMTYPE": "SHELL",
-    "PGMNAME": "test_shell.sh",
-    "SHELLFILE": "test_shell.sh",
-    "DESCRIPTION": "Test shell program",
-    "VERSION": "1.0",
-    "CREATED": "2025-07-21T09:46:17.516107Z",
-    "UPDATED": "2025-07-21T09:46:17.516107Z"
-  }
-}
-```
-
-### 🎯 **프로그램 등록 시 필수 필드**
-- `TYPE`: 반드시 "PGM"
-- `PGMTYPE`: "JAVA", "COBOL", "SHELL" 중 하나
-- `PGMNAME`: 실제 프로그램명
-- `DESCRIPTION`: 프로그램 설명
-- `VERSION`: 버전 정보
-- `CREATED`, `UPDATED`: ISO 형식 타임스탬프
-
-### 🚀 **프로그램 등록 후 실행 방법**
-```bash
-# CL 명령어로 프로그램 실행
-CALL PGM-CUINP001.TESTLIB,PARA='001,ABC',VOL-DISK01
-
-# ASP 명령어로 직접 실행  
-CALL PGM-CUINP001.TESTLIB,PARA-(001,ABC),VOL-DISK01
-```
-
-### 📋 **관련 파일 위치**
-- **catalog.json**: `/home/aspuser/app/asp-manager/public/config/catalog.json`
-- **프로그램 파일**: `/home/aspuser/app/volume/DISK01/TESTLIB/`
-- **CL Parser**: `/home/aspuser/app/server/system-cmds/cl_parser.py`
-- **CL Executor**: `/home/aspuser/app/server/system-cmds/cl_executor.py`
-- **서비스 미시작**: 로그 파일에서 에러 메시지 확인
-
----
-
-## 🔖 **모든 AI AGENT 기억해야 할 핵심 원칙**
-
-```
-이 프로젝트는 장난감이 아닙니다.
-실제 레거시 시스템을 마이그레이션하는 업무용 도구입니다.
-
-절대로 하드코딩하지 마세요.
-절대로 "데모용"이라는 핑계를 대지 마세요.
-절대로 사용자 요구사항을 임의로 축소하지 마세요.
-절대로 에러를 우회하지 말고 반드시 해결하세요.
-
-실제 파일 시스템의 모든 파일을 정확히 처리하세요.
-1개 파일이라도 빠뜨리면 안됩니다.
-```
-
-**개발**: Claude Code Assistant와 함께  
-**최종 업데이트**: 2025-07-23  
-**핵심 원칙**: 하드코딩 절대 금지, 실제 데이터만 사용  
-**인코딩**: SHIFT_JIS (시스템 스크립트), UTF-8 (소스 코드)
