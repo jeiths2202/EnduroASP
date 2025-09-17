@@ -49,6 +49,15 @@ except ImportError as e:
     POSTGRESQL_SESSION_AVAILABLE = False
     print(f"[API_SERVER] PostgreSQL Session Manager not available: {e}")
 
+# Import enhanced error handler
+try:
+    from error_handler import handle_api_error, log_operation_success, ErrorCategory, ErrorSeverity
+    ERROR_HANDLER_AVAILABLE = True
+    print("[API_SERVER] Enhanced Error Handler loaded successfully")
+except ImportError as e:
+    ERROR_HANDLER_AVAILABLE = False
+    print(f"[API_SERVER] Enhanced Error Handler not available: {e}")
+
 from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from flask_socketio import SocketIO, emit, join_room, leave_room
@@ -1836,17 +1845,58 @@ def execute_map_program(map_name, input_data):
 
 @app.route('/api/health', methods=['GET'])
 def health_check():
-    """?? ??"""
-    return jsonify({
-        'status': 'OK',
-        'version': 'v0.5.1',
-        'smed_dir': SMED_DIR,
-        'accounts_loaded': len(accounts),
-        'smed_pgm_maps': len(smed_pgm_config),
-        'map_pgm_maps': len(map_pgm_config.get('maps', {})),
-        'java_available': multi_executor.java_available if multi_executor else False,
-        'jar_exists': os.path.exists(multi_executor.jar_path) if multi_executor and multi_executor.jar_path else False
-    })
+    """향상된 헬스 체크 엔드포인트"""
+    try:
+        # 기본 시스템 상태 수집
+        health_data = {
+            'status': 'OK',
+            'version': 'v0.5.1',
+            'timestamp': datetime.now().isoformat(),
+            'smed_dir': SMED_DIR,
+            'accounts_loaded': len(accounts),
+            'smed_pgm_maps': len(smed_pgm_config),
+            'map_pgm_maps': len(map_pgm_config.get('maps', {})),
+        }
+        
+        # Java 실행 환경 상태 체크
+        try:
+            health_data['java_available'] = multi_executor.java_available if multi_executor else False
+            health_data['jar_exists'] = os.path.exists(multi_executor.jar_path) if multi_executor and multi_executor.jar_path else False
+        except Exception as e:
+            if ERROR_HANDLER_AVAILABLE:
+                error_data = handle_api_error(e, ErrorCategory.SYSTEM, ErrorSeverity.LOW, 
+                                            "Java 환경 상태를 확인할 수 없습니다", 
+                                            {"component": "java_executor"})
+                health_data['java_status_error'] = error_data[0].get_json()['error']['id']
+            health_data['java_available'] = False
+            health_data['jar_exists'] = False
+        
+        # 추가 시스템 상태 정보
+        health_data['system_info'] = {
+            'dbio_available': DBIO_AVAILABLE,
+            'postgresql_session_available': POSTGRESQL_SESSION_AVAILABLE,
+            'smart_encoding_available': SMART_ENCODING_AVAILABLE,
+            'error_handler_available': ERROR_HANDLER_AVAILABLE
+        }
+        
+        # 성공적인 헬스 체크 로깅
+        if ERROR_HANDLER_AVAILABLE:
+            log_operation_success("health_check", {"components_checked": len(health_data['system_info'])})
+        
+        return jsonify(health_data)
+        
+    except Exception as e:
+        if ERROR_HANDLER_AVAILABLE:
+            return handle_api_error(e, ErrorCategory.SYSTEM, ErrorSeverity.HIGH, 
+                                  "시스템 상태를 확인할 수 없습니다", 
+                                  {"endpoint": "/api/health"})
+        else:
+            # 기본 에러 처리 (fallback)
+            return jsonify({
+                'status': 'ERROR',
+                'message': 'Health check failed',
+                'error': str(e)
+            }), 500
 
 @app.route('/broadcast-smed', methods=['POST'])
 def broadcast_smed():
