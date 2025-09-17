@@ -1,0 +1,526 @@
+.smed-map-display {
+  font-family: 'Courier New', Courier, monospace;
+  background-color: #000000;
+  color: #00ff00;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.3);
+  position: relative;
+  display: inline-block;
+}
+
+.smed-map-display:focus {
+  outline: none;
+}
+
+.map-header {
+  color: #00ff00;
+  margin-bottom: 10px;
+  font-size: 14px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+}
+
+.terminal-grid {
+  display: inline-block;
+  border: 2px solid #00ff00;
+  padding: 10px;
+  background-color: #0a0a0a;
+  position: relative;
+  overflow: hidden;
+}
+
+.grid-row {
+  display: flex;
+  height: 1.2em;
+  line-height: 1.2em;
+  white-space: nowrap;
+}
+
+.grid-char {
+  display: inline-block;
+  width: 0.6em;
+  text-align: center;
+  color: #00ff00;
+  background-color: transparent;
+  cursor: default;
+  transition: background-color 0.1s ease;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+  vertical-align: top;
+  overflow: hidden;
+}
+
+.grid-char.input-field {
+  color: #00ff00;
+  background-color: transparent;
+  cursor: text;
+}
+
+.grid-char.input-field:hover {
+  background-color: #002200;
+}
+
+.grid-char.focused-field {
+  background-color: #005500;
+  color: #00ff00;
+}
+
+.grid-char.cursor {
+  animation: blink 1s infinite;
+  background-color: #00ff00 !important;
+  color: #000000 !important;
+  outline: 2px solid #ffffff;
+  z-index: 10;
+}
+
+/* New cursor class without blinking - just position highlight */
+.grid-char.cursor-no-blink {
+  background-color: #00ff00 !important;
+  color: #000000 !important;
+  outline: 2px solid #ffffff;
+  z-index: 10;
+  /* No animation - steady cursor */
+}
+
+@keyframes blink {
+  0%, 49% {
+    opacity: 1;
+  }
+  50%, 100% {
+    opacity: 0;
+  }
+}
+
+.status-bar {
+  margin-top: 10px;
+  padding: 5px 10px;
+  background-color: #003300;
+  color: #00ff00;
+  font-size: 12px;
+  border: 1px solid #00ff00;
+  display: flex;
+  justify-content: space-between;
+}
+
+/* Terminal phosphor glow effect */
+.terminal-grid::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(0, 255, 0, 0.03),
+    rgba(0, 255, 0, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+  z-index: 1;
+}
+
+/* Subtle scanline effect - disabled to prevent distraction */
+.terminal-grid::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: rgba(0, 255, 0, 0.02);
+  /* animation: scanline 8s linear infinite; */
+  pointer-events: none;
+  z-index: 2;
+  display: none; /* Completely hide the scanline */
+}
+
+@keyframes scanline {
+  0% {
+    top: 0;
+  }
+  100% {
+    top: 100%;
+  }
+}
+
+/* Field highlighting for better visibility - REMOVED to prevent unwanted underlines */
+/* .grid-char.input-field {
+  border-bottom: 1px solid #00ff00;
+  margin-bottom: -1px;
+} */
+
+/* Full-width character support */
+.grid-char.full-width {
+  width: 1.2em !important;
+  text-align: left !important;
+  font-weight: normal;
+}
+
+/* Error handling styles */
+.error-message {
+  background-color: #330000;
+  color: #ff6666;
+  padding: 20px;
+  border: 2px solid #ff6666;
+  border-radius: 8px;
+  text-align: center;
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.error-message p {
+  margin: 10px 0;
+  font-size: 14px;
+}
+
+.error-message button {
+  background-color: #ff6666;
+  color: #000000;
+  border: none;
+  padding: 10px 20px;
+  margin-top: 15px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-family: 'Courier New', Courier, monospace;
+  font-weight: bold;
+}
+
+.error-message button:hover {
+  background-color: #ff8888;
+}
+
+.error-row {
+  background-color: #330000;
+  color: #ff6666;
+  padding: 2px 5px;
+}
+
+.error-char {
+  background-color: #660000 !important;
+  color: #ff6666 !important;
+}
+
+/* Improved grid layout for employee data */
+.grid-row {
+  display: flex;
+  height: 1.2em;
+  line-height: 1.2em;
+  white-space: nowrap;
+  min-height: 1.2em;
+}
+
+/* Better alignment for Japanese names */
+.grid-char {
+  display: inline-block;
+  width: 0.6em;
+  text-align: center;
+  color: #00ff00;
+  background-color: transparent;
+  cursor: default;
+  transition: background-color 0.1s ease;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+  vertical-align: top;
+  overflow: hidden;
+  box-sizing: border-box;
+}
+
+/* Improve status bar layout */
+.status-bar {
+  margin-top: 10px;
+  padding: 8px 15px;
+  background-color: #002200;
+  color: #88ff88;
+  font-size: 11px;
+  border: 1px solid #00ff00;
+  display: block;
+  text-align: center;
+  letter-spacing: 1px;
+}
+
+/* Better field highlighting - REMOVED background to prevent highlighting */
+.grid-char.input-field {
+  color: #ffffff;
+  background-color: transparent;
+  cursor: text;
+  /* Removed border-bottom to prevent unwanted underlines */
+  /* border-bottom: 1px solid #00ff00;
+  margin-bottom: -1px; */
+}
+
+.grid-char.input-field:hover {
+  background-color: transparent;
+}
+
+.grid-char.focused-field {
+  background-color: #007700;
+  color: #ffffff;
+  box-shadow: 0 0 5px #00ff00, inset 0 0 3px #00ff00;
+  border: 1px solid #00ff00;
+}
+
+/* SVG Premium Display Styles */
+.smed-svg-premium-container {
+  width: 100vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 
+    0 10px 30px rgba(0, 0, 0, 0.5),
+    inset 0 1px 2px rgba(0, 255, 0, 0.1);
+  border: 1px solid rgba(0, 255, 0, 0.3);
+  position: fixed;
+  top: 0;
+  left: 0;
+}
+
+.smed-svg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  background: linear-gradient(90deg, #2a2a2a 0%, #1a1a1a 100%);
+  border-bottom: 2px solid rgba(0, 255, 0, 0.3);
+  position: relative;
+}
+
+.smed-svg-title {
+  margin: 0;
+  color: #00ff88;
+  font-family: 'Monaco', 'Lucida Console', monospace;
+  font-size: 16px;
+  font-weight: bold;
+  text-shadow: 0 0 8px rgba(0, 255, 136, 0.5);
+}
+
+.smed-svg-controls {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.smed-svg-info {
+  color: #888;
+  font-family: 'Monaco', 'Lucida Console', monospace;
+  font-size: 12px;
+  padding: 4px 8px;
+  background: rgba(0, 255, 0, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 255, 0, 0.2);
+}
+
+.smed-svg-close-btn {
+  background: rgba(255, 0, 0, 0.1);
+  border: 1px solid rgba(255, 0, 0, 0.3);
+  color: #ff6b6b;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-family: 'Monaco', 'Lucida Console', monospace;
+  font-size: 14px;
+  font-weight: bold;
+  transition: all 0.2s ease;
+}
+
+.smed-svg-close-btn:hover {
+  background: rgba(255, 0, 0, 0.2);
+  border-color: rgba(255, 0, 0, 0.5);
+  box-shadow: 0 0 8px rgba(255, 0, 0, 0.3);
+  transform: scale(1.05);
+}
+
+.smed-svg-display-area {
+  padding: 16px;
+  background: #0a0a0a;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  min-height: 480px;
+}
+
+.smed-svg-canvas {
+  background: transparent;
+  border-radius: 4px;
+  box-shadow: 
+    0 0 20px rgba(0, 255, 0, 0.2),
+    inset 0 0 50px rgba(0, 255, 0, 0.05);
+  border: 2px solid rgba(0, 255, 0, 0.3);
+  transition: box-shadow 0.3s ease;
+  max-width: 100%;
+  max-height: 100%;
+}
+
+.smed-svg-canvas:hover {
+  box-shadow: 
+    0 0 30px rgba(0, 255, 0, 0.3),
+    inset 0 0 50px rgba(0, 255, 0, 0.08);
+}
+
+.smed-svg-instructions {
+  padding: 8px 16px;
+  background: rgba(0, 0, 0, 0.8);
+  border-top: 1px solid rgba(0, 255, 0, 0.2);
+  text-align: center;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
+.smed-svg-instructions span {
+  color: #00ff88;
+  font-family: 'Monaco', 'Lucida Console', monospace;
+  font-size: 12px;
+  text-shadow: 0 0 4px rgba(0, 255, 136, 0.3);
+}
+
+.smed-svg-input {
+  font-family: 'Monaco', 'Lucida Console', monospace !important;
+  border: none !important;
+  outline: none !important;
+  background: transparent !important;
+  color: #00ff00 !important;
+  text-shadow: 0 0 3px rgba(0, 255, 0, 0.5);
+}
+
+.smed-svg-input:focus {
+  background: transparent !important;
+  border: none !important;
+  outline: none !important;
+}
+
+/* Loading styles */
+.smed-loading-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background: linear-gradient(135deg, #1a1a1a 0%, #0a0a0a 100%);
+  border-radius: 8px;
+  color: #00ff88;
+  font-family: 'Monaco', 'Lucida Console', monospace;
+}
+
+.smed-loading-spinner {
+  width: 40px;
+  height: 40px;
+  border: 3px solid rgba(0, 255, 0, 0.2);
+  border-top: 3px solid #00ff00;
+  border-radius: 50%;
+  animation: smedSvgSpinner 1s linear infinite;
+  margin-bottom: 16px;
+}
+
+.smed-loading-container p {
+  margin: 0;
+  font-size: 14px;
+  color: #888;
+  text-shadow: 0 0 4px rgba(0, 255, 136, 0.3);
+}
+
+/* Error styles */
+.smed-display-svg-error {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 400px;
+  background: linear-gradient(135deg, #2a1a1a 0%, #1a0a0a 100%);
+  border-radius: 8px;
+  border: 2px solid rgba(255, 0, 0, 0.3);
+}
+
+.smed-display-svg-error .error-message {
+  text-align: center;
+  color: #ff6b6b;
+  font-family: 'Monaco', 'Lucida Console', monospace;
+  padding: 20px;
+  background: rgba(255, 0, 0, 0.1);
+  border-radius: 8px;
+  border: 1px solid rgba(255, 0, 0, 0.2);
+  max-width: 500px;
+}
+
+/* Animations */
+@keyframes smedSvgSpinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* Windows-style close button styles */
+.smed-close-button {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.smed-close-button:hover .close-button-bg {
+  fill: rgba(255, 0, 0, 0.4);
+  stroke: rgba(255, 0, 0, 0.8);
+}
+
+.smed-close-button:hover .close-button-text {
+  fill: #ffffff;
+  filter: drop-shadow(0 0 3px #ff0000);
+}
+
+.smed-close-button:active .close-button-bg {
+  fill: rgba(255, 0, 0, 0.6);
+  transform: scale(0.95);
+}
+
+.close-button-bg {
+  transition: all 0.2s ease;
+}
+
+.close-button-text {
+  transition: all 0.2s ease;
+  user-select: none;
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .smed-svg-header {
+    padding: 8px 12px;
+  }
+  
+  .smed-svg-title {
+    font-size: 14px;
+  }
+  
+  .smed-svg-info {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+  
+  .smed-svg-close-btn {
+    width: 24px;
+    height: 24px;
+    font-size: 12px;
+  }
+  
+  .smed-svg-display-area {
+    padding: 8px;
+    min-height: 360px;
+  }
+  
+  .smed-svg-instructions span {
+    font-size: 10px;
+  }
+  
+  /* Mobile close button adjustments */
+  .smed-close-button text {
+    font-size: 12px;
+  }
+}

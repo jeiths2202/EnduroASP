@@ -1,0 +1,8 @@
+Manifest-Version: 1.0
+Main-Class: com.openasp.launcher.OpenASPLauncher
+Created-By: OpenASP Build System
+Implementation-Title: OpenASP Java Programs
+Implementation-Version: 2.0
+Built-Date: 2025-07-05 18:01:39
+Package-Structure: com.openasp.*
+Encoding: UTF-8

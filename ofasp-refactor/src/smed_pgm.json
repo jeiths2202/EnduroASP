@@ -1,0 +1,142 @@
+{
+  "description": "SMED MAP? MAIN ???? ?? ?? (?? Java ???? ????)",
+  "version": "2.0",
+  "last_updated": "2025-07-06",
+  "programs": {
+    "MENU": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.menu.MenuProgram",
+      "DESCRIPTION": "?? ?? ?? (F7 ?? ??)"
+    },
+    "LOGO": {
+      "TYPE": "JAVA", 
+      "PGM": "com.openasp.login.LoginProgram",
+      "DESCRIPTION": "??? ??"
+    },
+    "PGM1": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.core.PGM1",
+      "DESCRIPTION": "?? ??? ?? ???? (???)"
+    },
+    "PGM2": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.core.PGM2",
+      "DESCRIPTION": "?? ??? ???? (???)"
+    },
+    "EIGYO001": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.eigyo.EIGYO001", 
+      "DESCRIPTION": "?? ?? ?? 001"
+    },
+    "EIGYO002": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.eigyo.EIGYO002",
+      "DESCRIPTION": "?? ?? ?? 002"
+    },
+    "NOHINO001": {
+      "TYPE": "COBOL",
+      "PGM": "/home/aspuser/app/server/cobol_modules/NOHIN001.so",
+      "DESCRIPTION": "?? ?? COBOL ???? 001"
+    },
+    "NOHINO002": {
+      "TYPE": "SHELL", 
+      "PGM": "/home/aspuser/app/server/shell_modules/NOHIN002.sh",
+      "DESCRIPTION": "?? ?? Shell ???? 002"
+    },
+    "ZAIKO001": {
+      "TYPE": "COBOL",
+      "PGM": "/home/aspuser/app/server/cobol_modules/ZAIKO001.so", 
+      "DESCRIPTION": "?? ?? COBOL ????"
+    },
+    "BATCH001": {
+      "TYPE": "SHELL",
+      "PGM": "/home/aspuser/app/server/shell_modules/BATCH001.sh",
+      "DESCRIPTION": "?? ?? Shell ????"
+    },
+    "URIAGE001": {
+      "TYPE": "JAVA", 
+      "PGM": "com.openasp.uriage.URIAGE001",
+      "DESCRIPTION": "?? ?? ??"
+    },
+    "REPORT001": {
+      "TYPE": "SHELL",
+      "PGM": "/home/aspuser/app/server/shell_modules/REPORT001.sh", 
+      "DESCRIPTION": "??? ?? ????"
+    },
+    "USER001": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.user.UserManagement",
+      "DESCRIPTION": "??? ?? ????"
+    },
+    "SYSTEM001": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.system.SystemInfo",
+      "DESCRIPTION": "システム情報表示"
+    },
+    "LOGOUT": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.system.LogoutProgram",
+      "DESCRIPTION": "ログアウト処理プログラム"
+    },
+    "MAIN001": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.sample.PGM000",
+      "DESCRIPTION": "メインメニュー制御プログラム"
+    },
+    "MENU001": {
+      "TYPE": "JAVA", 
+      "PGM": "com.openasp.sample.PGM001",
+      "DESCRIPTION": "社員照会プログラム"
+    },
+    "MENU003": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.sample.PGM002", 
+      "DESCRIPTION": "社員追加プログラム"
+    },
+    "MENU004": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.sample.PGM003",
+      "DESCRIPTION": "社員追加確認プログラム"
+    },
+    "MENU005": {
+      "TYPE": "JAVA",
+      "PGM": "com.openasp.sample.PGM004",
+      "DESCRIPTION": "社員更新検索プログラム"
+    }
+  },
+  "type_settings": {
+    "JAVA": {
+      "executor": "java",
+      "jar_path": "/home/aspuser/app/server/java_jars/ofasp.jar",
+      "main_class": "com.openasp.launcher.OpenASPLauncher",
+      "timeout": 60,
+      "encoding": "UTF-8",
+      "jvm_options": ["-Xmx512m", "-Dfile.encoding=UTF-8"]
+    },
+    "COBOL": {
+      "executor": "dlcall",
+      "library_path": "/home/aspuser/app/server/cobol_modules",
+      "timeout": 120,
+      "encoding": "UTF-8"
+    },
+    "SHELL": {
+      "executor": "bash",
+      "script_path": "/home/aspuser/app/server/shell_modules", 
+      "timeout": 300,
+      "encoding": "UTF-8"
+    }
+  },
+  "package_structure": {
+    "com.openasp.core": "?? ??? ????? (PGM1, PGM2)",
+    "com.openasp.login": "??? ?? ?????",
+    "com.openasp.menu": "?? ?? ?????",
+    "com.openasp.eigyo": "?? ?? ?????",
+    "com.openasp.uriage": "?? ?? ?????",
+    "com.openasp.zaiko": "?? ?? ?????",
+    "com.openasp.nohin": "?? ?? ?????",
+    "com.openasp.user": "??? ?? ?????",
+    "com.openasp.system": "??? ?? ?????",
+    "com.openasp.sample": "サンプル業務プログラム群 (PGM000-PGM004)",
+    "com.openasp.launcher": "???? ??"
+  }
+}

@@ -1,0 +1,619 @@
+/* ASP CLI Web Terminal Styles */
+
+.asp-cli-terminal {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+  background: linear-gradient(135deg, #0c1e2b 0%, #1a3347 100%);
+  color: #e0f0ff;
+  overflow: hidden;
+}
+
+.asp-cli-terminal.dark {
+  background: linear-gradient(135deg, #0a0a0a 0%, #1a1a1a 100%);
+  color: #00ff00;
+}
+
+.asp-cli-terminal.light {
+  background: linear-gradient(135deg, #f0f8ff 0%, #e6f3ff 100%);
+  color: #2c3e50;
+}
+
+/* 헤더 스타일 */
+.terminal-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 20px;
+  background: rgba(0, 0, 0, 0.3);
+  border-bottom: 2px solid #00ff88;
+  backdrop-filter: blur(10px);
+}
+
+.header-title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.title-icon {
+  font-size: 24px;
+}
+
+.title-text {
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ff88;
+}
+
+/* Hub connection status indicator */
+.hub-status {
+  font-size: 0.8rem;
+  padding: 2px 6px;
+  border-radius: 4px;
+  margin-left: 12px;
+  font-weight: 500;
+}
+
+.hub-connected {
+  color: #22c55e;
+  background-color: rgba(34, 197, 94, 0.1);
+}
+
+.hub-disconnected {
+  color: #f59e0b;
+  background-color: rgba(245, 158, 11, 0.1);
+}
+
+.hub-error {
+  color: #ef4444;
+  background-color: rgba(239, 68, 68, 0.1);
+}
+
+.header-info {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: #a0d0ff;
+}
+
+.info-item {
+  padding: 4px 8px;
+  background: rgba(0, 255, 136, 0.1);
+  border-radius: 4px;
+  border: 1px solid rgba(0, 255, 136, 0.3);
+}
+
+.info-separator {
+  color: #666;
+}
+
+.clear-button {
+  background: rgba(255, 69, 69, 0.8);
+  border: none;
+  border-radius: 6px;
+  padding: 8px 12px;
+  color: white;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+
+.clear-button:hover {
+  background: rgba(255, 69, 69, 1);
+  transform: scale(1.05);
+}
+
+/* 터미널 본문 */
+.terminal-body {
+  flex: 1;
+  padding: 20px;
+  overflow-y: auto;
+  scroll-behavior: smooth;
+}
+
+.terminal-body::-webkit-scrollbar {
+  width: 8px;
+}
+
+.terminal-body::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.2);
+}
+
+.terminal-body::-webkit-scrollbar-thumb {
+  background: rgba(0, 255, 136, 0.5);
+  border-radius: 4px;
+}
+
+.terminal-body::-webkit-scrollbar-thumb:hover {
+  background: rgba(0, 255, 136, 0.8);
+}
+
+/* 환영 메시지 */
+.welcome-message {
+  text-align: center;
+  margin: 40px 0;
+  animation: fadeInUp 1s ease-out;
+}
+
+.welcome-logo {
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+  font-size: 14px;
+  color: #00ff88;
+  margin-bottom: 20px;
+  line-height: 1.2;
+  text-shadow: 0 0 10px rgba(0, 255, 136, 0.5);
+}
+
+.welcome-text {
+  font-size: 16px;
+  color: #a0d0ff;
+  line-height: 1.6;
+}
+
+.welcome-text strong {
+  color: #00ff88;
+  font-weight: bold;
+}
+
+/* 명령어 엔트리 */
+.command-entry {
+  margin-bottom: 16px;
+  animation: slideIn 0.3s ease-out;
+}
+
+.command-line {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 4px;
+}
+
+.prompt {
+  color: #00ff88;
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.command-text {
+  color: #fff;
+  font-size: 14px;
+  flex: 1;
+}
+
+.command-time {
+  color: #888;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.command-output {
+  margin-left: 20px;
+  padding: 8px 12px;
+  border-left: 3px solid #00ff88;
+  background: rgba(0, 255, 136, 0.05);
+  border-radius: 0 6px 6px 0;
+}
+
+.command-output.success {
+  border-left-color: #00ff88;
+  background: rgba(0, 255, 136, 0.05);
+}
+
+.command-output.error {
+  border-left-color: #ff4757;
+  background: rgba(255, 71, 87, 0.05);
+  color: #ff6b7a;
+}
+
+.command-output pre {
+  margin: 0;
+  font-family: inherit;
+  font-size: 13px;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+}
+
+/* 실행 중 표시 */
+.executing-indicator {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+  animation: pulse 1.5s infinite;
+}
+
+.loading-dots {
+  color: #ffa502;
+  font-style: italic;
+  animation: blink 1s infinite;
+}
+
+/* 명령어 입력 */
+.terminal-input {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 20px;
+  background: rgba(0, 0, 0, 0.4);
+  border-top: 2px solid #00ff88;
+  backdrop-filter: blur(10px);
+}
+
+.input-prompt {
+  color: #00ff88;
+  font-weight: bold;
+  font-size: 14px;
+  min-width: 40px;
+}
+
+.command-input {
+  flex: 1;
+  background: rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(0, 255, 136, 0.3);
+  border-radius: 6px;
+  padding: 10px 12px;
+  color: #fff;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+  font-size: 14px;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.command-input:focus {
+  border-color: #00ff88;
+  box-shadow: 0 0 0 2px rgba(0, 255, 136, 0.2);
+  background: rgba(0, 0, 0, 0.8);
+}
+
+.command-input::placeholder {
+  color: #666;
+  font-style: italic;
+}
+
+.command-input:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.execute-button {
+  background: linear-gradient(135deg, #00ff88 0%, #00cc6a 100%);
+  border: none;
+  border-radius: 6px;
+  padding: 10px 20px;
+  color: #000;
+  font-weight: bold;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  min-width: 80px;
+}
+
+.execute-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #00cc6a 0%, #00aa55 100%);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 255, 136, 0.3);
+}
+
+.execute-button:disabled {
+  background: #444;
+  color: #888;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+/* 도움말 패널 */
+.help-panel {
+  padding: 8px 20px;
+  background: rgba(0, 0, 0, 0.2);
+  border-top: 1px solid rgba(0, 255, 136, 0.2);
+  font-size: 12px;
+  color: #888;
+  text-align: center;
+}
+
+.help-panel strong {
+  color: #a0d0ff;
+}
+
+/* 라이트 모드 오버라이드 */
+.asp-cli-terminal.light .terminal-header {
+  background: rgba(255, 255, 255, 0.8);
+  border-bottom-color: #007acc;
+}
+
+.asp-cli-terminal.light .title-text {
+  color: #007acc;
+}
+
+.asp-cli-terminal.light .info-item {
+  background: rgba(0, 122, 204, 0.1);
+  border-color: rgba(0, 122, 204, 0.3);
+  color: #2c3e50;
+}
+
+.asp-cli-terminal.light .welcome-logo {
+  color: #007acc;
+  text-shadow: 0 0 10px rgba(0, 122, 204, 0.3);
+}
+
+.asp-cli-terminal.light .welcome-text {
+  color: #34495e;
+}
+
+.asp-cli-terminal.light .welcome-text strong {
+  color: #007acc;
+}
+
+.asp-cli-terminal.light .prompt {
+  color: #007acc;
+}
+
+.asp-cli-terminal.light .command-text {
+  color: #2c3e50;
+}
+
+.asp-cli-terminal.light .command-output {
+  border-left-color: #007acc;
+  background: rgba(0, 122, 204, 0.1);
+}
+
+.asp-cli-terminal.light .terminal-input {
+  background: rgba(255, 255, 255, 0.8);
+  border-top-color: #007acc;
+}
+
+.asp-cli-terminal.light .input-prompt {
+  color: #007acc;
+}
+
+.asp-cli-terminal.light .command-input {
+  background: rgba(255, 255, 255, 0.9);
+  border-color: rgba(0, 122, 204, 0.3);
+  color: #2c3e50;
+}
+
+.asp-cli-terminal.light .command-input:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+}
+
+.asp-cli-terminal.light .execute-button {
+  background: linear-gradient(135deg, #007acc 0%, #005999 100%);
+  color: white;
+}
+
+.asp-cli-terminal.light .execute-button:hover:not(:disabled) {
+  background: linear-gradient(135deg, #005999 0%, #004477 100%);
+}
+
+/* 애니메이션 */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes pulse {
+  0%, 100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+}
+
+@keyframes blink {
+  0%, 50% {
+    opacity: 1;
+  }
+  51%, 100% {
+    opacity: 0;
+  }
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  .terminal-header {
+    padding: 8px 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .header-info {
+    font-size: 12px;
+  }
+  
+  .terminal-body {
+    padding: 12px;
+  }
+  
+  .terminal-input {
+    padding: 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  
+  .command-input {
+    width: 100%;
+  }
+  
+  .execute-button {
+    width: 100%;
+  }
+}
+
+/* 드롭다운 메뉴 스타일 */
+.dropdown-container {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-trigger {
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.2s ease;
+}
+
+.dropdown-trigger:hover {
+  color: #00ff88;
+}
+
+.dropdown-menu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 120px;
+  background: rgba(0, 0, 0, 0.9);
+  border: 1px solid rgba(0, 255, 136, 0.5);
+  border-radius: 6px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 1000;
+  animation: dropdownSlide 0.2s ease-out;
+  backdrop-filter: blur(10px);
+}
+
+.dropdown-item {
+  padding: 8px 12px;
+  cursor: pointer;
+  color: #a0d0ff;
+  font-size: 13px;
+  transition: all 0.2s ease;
+  border-bottom: 1px solid rgba(0, 255, 136, 0.1);
+}
+
+.dropdown-item:last-child {
+  border-bottom: none;
+}
+
+.dropdown-item:hover {
+  background: rgba(0, 255, 136, 0.2);
+  color: #fff;
+}
+
+.dropdown-item.selected {
+  background: rgba(0, 255, 136, 0.3);
+  color: #00ff88;
+  font-weight: bold;
+}
+
+/* 라이트 모드 드롭다운 */
+.asp-cli-terminal.light .dropdown-trigger:hover {
+  color: #007acc;
+}
+
+.asp-cli-terminal.light .dropdown-menu {
+  background: rgba(255, 255, 255, 0.95);
+  border-color: rgba(0, 122, 204, 0.5);
+}
+
+.asp-cli-terminal.light .dropdown-item {
+  color: #2c3e50;
+  border-bottom-color: rgba(0, 122, 204, 0.1);
+}
+
+.asp-cli-terminal.light .dropdown-item:hover {
+  background: rgba(0, 122, 204, 0.2);
+  color: #1a252f;
+}
+
+.asp-cli-terminal.light .dropdown-item.selected {
+  background: rgba(0, 122, 204, 0.3);
+  color: #007acc;
+}
+
+@keyframes dropdownSlide {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 접근성 개선 */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* SMED Map Overlay Styles */
+.smed-map-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+.smed-map-container {
+  background-color: #000;
+  border: 2px solid #00ff00;
+  border-radius: 4px;
+  box-shadow: 0 0 20px rgba(0, 255, 0, 0.5);
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+.smed-map-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 20px;
+  background-color: #111;
+  border-bottom: 1px solid #00ff00;
+}
+
+.smed-map-header h3 {
+  margin: 0;
+  color: #00ff00;
+  font-family: 'Courier New', monospace;
+}
+
+.smed-close-button {
+  background: none;
+  border: 1px solid #00ff00;
+  color: #00ff00;
+  font-size: 20px;
+  cursor: pointer;
+  padding: 5px 10px;
+  transition: all 0.3s;
+}
+
+.smed-close-button:hover {
+  background-color: #00ff00;
+  color: #000;
+}

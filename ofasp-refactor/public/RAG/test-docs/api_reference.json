@@ -1,0 +1,60 @@
+{
+  "api_reference": {
+    "title": "OpenASP Chat API Reference",
+    "version": "1.0.0",
+    "endpoints": [
+      {
+        "path": "/api/chat",
+        "method": "POST",
+        "description": "Send chat message to AI models",
+        "parameters": {
+          "prompt": "string - User message",
+          "model": "string - AI model to use",
+          "use_rag": "boolean - Enable RAG search",
+          "images": "array - Base64 encoded images"
+        },
+        "response": {
+          "response": "string - AI generated response",
+          "rag_results": "array - Related documents if RAG enabled"
+        }
+      },
+      {
+        "path": "/api/models",
+        "method": "GET",
+        "description": "List available AI models",
+        "response": {
+          "models": "array - List of available models with metadata"
+        }
+      },
+      {
+        "path": "/api/rag/status",
+        "method": "GET",
+        "description": "Get RAG service status",
+        "response": {
+          "available": "boolean - RAG service availability",
+          "health": "object - Health check results",
+          "collection": "object - Vector database information"
+        }
+      },
+      {
+        "path": "/api/rag/search",
+        "method": "POST",
+        "description": "Search documents using RAG",
+        "parameters": {
+          "query": "string - Search query",
+          "n_results": "number - Maximum results to return",
+          "min_score": "number - Minimum similarity score"
+        }
+      },
+      {
+        "path": "/api/rag/index",
+        "method": "POST",
+        "description": "Index documents into vector database",
+        "parameters": {
+          "directory": "string - Directory path to index",
+          "file_types": "array - File extensions to process"
+        }
+      }
+    ]
+  }
+}

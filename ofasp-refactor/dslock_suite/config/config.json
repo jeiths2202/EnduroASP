@@ -1,0 +1,11 @@
+
+{
+  "DSIO_ROOT": "/home/aspuser/app/volume",
+  "DSIO_FSYNC": 1,
+  "DSIO_ATOMIC": 1,
+  "RECFM_FB_NEWLINE": 0,
+  "RECFM_VB_NEWLINE": 0,
+  "DSIO_CATALOG": "/home/aspuser/app/config/catalog.json",
+  "DSLOCK_DATABASE_DIR": "/home/aspuser/app/ofasp-refactor/dslock_suite/database",
+  "DSLOCK_DATABASE_FILE": "dslock.dat"
+}

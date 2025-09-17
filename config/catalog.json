@@ -1,0 +1,917 @@
+{
+  "DISK01": {
+    "JAVA": {
+      "MAIN001": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "SUB001": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "TSTJAVA1": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      }
+    },
+    "LAYOUT": {
+      "SAM001": {
+        "TYPE": "LAYOUT",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "LAYOUTTYPE": "SCREEN",
+        "LAYOUTDATA": {}
+      }
+    },
+    "PRODLIB": {
+      "BACKUP_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "BILLING": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "SHELL",
+        "ENCODING": "UTF-8"
+      },
+      "CLEANUP_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "CUSTOMER.FB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 120,
+        "ENCODING": "utf-8"
+      },
+      "LONGRUN_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "REPORT.VB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "VB",
+        "RECLEN": 256,
+        "ENCODING": "utf-8"
+      },
+      "REPORT_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "SALES.FB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 100,
+        "ENCODING": "utf-8"
+      },
+      "TESTCL": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      }
+    },
+    "SMED": {
+      "BROWSE_MENU": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "ENDUROASP_LOGO": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "LOGO": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MAIN001": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MAINMENU": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MENU": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MENU001": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MENU003": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MENU004": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MENU005": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MENU006": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MENU007": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "MSGSAMP1": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      },
+      "SUB001": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "SMED"
+      }
+    },
+    "TESTLIB": {
+      "/tmp/a.out": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 4,
+        "ENCODING": "ascii"
+      },
+      "BACKUP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "CL001": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "CLTEST01": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "CUINP001": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "CUSTINQ": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "HTML"
+      },
+      "CUSTOMER.SAM001": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 128,
+        "ENCODING": "utf-8"
+      },
+      "CobolDataConversionException": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "CobolFileException": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "DAILY_BATCH": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "DATAPROC_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "DATA_INIT": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "DEMO.SAM.CONVERTED": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 11,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SAM.FINAL": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SAM.FIXED": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SAM.FLAT": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 4,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SAM.OUTPUT": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SAM.REMOVE": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SAM.SOSI": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SAM.SOSI.FLAT": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "DEMO.SOSI": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "DisplayOutputHandler": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "DspFile": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "EMP.INFO": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "shift_jis"
+      },
+      "EMPADD": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "EMPDEL": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "EMPFILEJAVA": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "EMPINQ": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "EMPLOYEE.FB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "shift_jis"
+      },
+      "EMPLOYEE_SJIS.FB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "shift_jis"
+      },
+      "EMPLOYEE_TEST.FB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "shift_jis"
+      },
+      "EMPLOYEE_WRITE": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "EMPREAD_CL": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "EMPUPD": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "EnhancedTestProgram": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "FILEUTIL": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "FILEUTIL_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "FILEWRITE_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "HELLOASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "HelloASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "JSONResponse": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "LOGOPGM1": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "LOG_WRITE": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "LONGJOB": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "MAIN001": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MAIN001Demo": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MAIN001Interactive": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MAIN001Test": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MAIN001_TESTLIB": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MSGSAMPLE": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MSGSAMPLEBROWSERMENU": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MSGSAMPLEBROWSERMENUJSON": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MSGSample": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "MitdspRecord": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "NEWMAP": {
+        "TYPE": "MAP",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "MAPTYPE": "HTML"
+      },
+      "NEWPROGRAM": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "OutputHandler": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "PAYROLL.VB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "VB",
+        "RECLEN": 256,
+        "ENCODING": "utf-8"
+      },
+      "PAYROLL01": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "COBOL",
+        "ENCODING": "UTF-8"
+      },
+      "PGM000": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "PGM001": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "PGM002": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "PGM003": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "PGM004": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "PRT001": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "REPORT": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "REPORT_WRITE": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "RESTORE": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "SAM001": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "shift_jis"
+      },
+      "SAM001.ASCII": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "JAK"
+      },
+      "SAMDATA": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "utf-8"
+      },
+      "SUB001_TESTLIB": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "SYSCLEAN": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "SYSTEM_CHECK": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "SimpleMAIN001Test": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "TEST.SAM.FB": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 4,
+        "ENCODING": "ascii"
+      },
+      "TEST.SAM.FB80": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "ascii"
+      },
+      "TESTCL": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "TESTCL1": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "TESTFILE": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "utf-8"
+      },
+      "TESTJP_ASP": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "TESTMSG_CL": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "CL",
+        "ENCODING": "UTF-8"
+      },
+      "TESTPGM": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "TSTJAVA1_TESTLIB": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "TestAbend": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "TestProgram": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "WebUIService": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "JAVA",
+        "ENCODING": "UTF-8"
+      },
+      "long_job": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "SHELL",
+        "ENCODING": "UTF-8"
+      },
+      "test_job": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "SHELL",
+        "ENCODING": "UTF-8"
+      },
+      "test_shell": {
+        "TYPE": "PGM",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "PGMTYPE": "SHELL",
+        "ENCODING": "UTF-8"
+      },
+      "TESTPG3": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-13T11:06:57.724870Z",
+        "UPDATED": "2025-09-13T11:06:57.724870Z",
+        "RECTYPE": "VB",
+        "RECLEN": 200,
+        "ENCODING": "utf-8",
+        "DESCRIPTION": "TESTPG3 dataset"
+      }
+    },
+    "XMLLIB": {
+      "EMPLECPY": {
+        "TYPE": "COPYBOOK",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "COPYBOOKTYPE": "COBOL",
+        "ENCODING": "shift_jis"
+      },
+      "MITDSP": {
+        "TYPE": "COPYBOOK",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "COPYBOOKTYPE": "COBOL",
+        "ENCODING": "shift_jis"
+      }
+    }
+  },
+  "DISK02": {
+    "BACKUPLIB": {
+      "DAILY_BACKUP": {
+        "TYPE": "JOB",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "JOBTYPE": "BATCH"
+      }
+    },
+    "PRODLIB": {
+      "SCHEMA.TEST": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z",
+        "RECTYPE": "FB",
+        "RECLEN": 80,
+        "ENCODING": "shift_jis"
+      }
+    }
+  },
+  "TEST": {
+    "LIB1": {
+      "TESTDS": {
+        "TYPE": "UNKNOWN",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z"
+      }
+    }
+  },
+  "TEST_VOL2": {
+    "TEST_LIB2": {
+      "TEST_DATASET": {
+        "TYPE": "DATASET",
+        "CREATED": "2025-09-01T08:23:26.610432Z",
+        "UPDATED": "2025-09-01T08:23:26.610432Z",
+        "RECTYPE": "FB",
+        "RECLEN": 132,
+        "ENCODING": "utf-8"
+      }
+    }
+  },
+  "TEST_VOLUME": {
+    "TEST_LIB": {
+      "CONVERTED.DATA": {
+        "TYPE": "UNKNOWN",
+        "CREATED": "2025-09-01T06:50:02.456198Z",
+        "UPDATED": "2025-09-01T06:50:02.456198Z"
+      }
+    }
+  }
+}

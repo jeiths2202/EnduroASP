@@ -1,0 +1,30 @@
+node_modules
+
+# Backup files
+*.tar
+*.tgz
+*.gz
+*.zip
+*.bak
+*-backup-*
+
+# Compiled files
+*.so
+*.pyc
+__pycache__/
+
+# Log files
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Database files
+*.db
+
+# PID files
+*.pid
+
+# Runtime files
+.running_services

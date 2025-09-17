@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Debug React Request</title>
+</head>
+<body>
+    <h1>Debug React Request Structure</h1>
+    <button onclick="testReactRequest()">Test React-style Request</button>
+    <button onclick="testBasicRequest()">Test Basic Request</button>
+    <div id="output"></div>
+
+    <script>
+        function log(message) {
+            document.getElementById('output').innerHTML += '<div>' + message + '</div>';
+            console.log(message);
+        }
+
+        // Test exact same structure as React ChatPage.tsx
+        async function testReactRequest() {
+            log('Testing React-style request...');
+            
+            try {
+                let requestPayload = {
+                    message: "test from react style",
+                    files: [],
+                    use_rag: true
+                };
+
+                log('Request payload: ' + JSON.stringify(requestPayload));
+
+                const response = await fetch('http://localhost:3006/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(requestPayload),
+                });
+
+                log('Response status: ' + response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log('Error response: ' + errorText);
+                    throw new Error(`HTTP error! status: ${response.status}, response: ${errorText}`);
+                }
+
+                const data = await response.json();
+                log('Success response: ' + JSON.stringify(data, null, 2));
+
+            } catch (error) {
+                log('Error: ' + error.message);
+                console.error('Full error:', error);
+            }
+        }
+
+        // Test basic request
+        async function testBasicRequest() {
+            log('Testing basic request...');
+            
+            try {
+                const response = await fetch('http://localhost:3006/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: "basic test",
+                        files: [],
+                        use_rag: true
+                    }),
+                });
+
+                log('Basic response status: ' + response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    log('Basic error: ' + errorText);
+                    return;
+                }
+
+                const data = await response.json();
+                log('Basic success: ' + JSON.stringify(data, null, 2));
+
+            } catch (error) {
+                log('Basic error: ' + error.message);
+            }
+        }
+    </script>
+</body>
+</html>

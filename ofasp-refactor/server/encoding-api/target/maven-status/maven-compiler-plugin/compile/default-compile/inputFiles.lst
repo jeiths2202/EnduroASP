@@ -1,0 +1,5 @@
+/home/aspuser/app/server/encoding-api/src/main/java/com/asp/encoding/model/EncodingRequest.java
+/home/aspuser/app/server/encoding-api/src/main/java/com/asp/encoding/EncodingApiApplication.java
+/home/aspuser/app/server/encoding-api/src/main/java/com/asp/encoding/service/EncodingService.java
+/home/aspuser/app/server/encoding-api/src/main/java/com/asp/encoding/model/EncodingResponse.java
+/home/aspuser/app/server/encoding-api/src/main/java/com/asp/encoding/controller/EncodingController.java

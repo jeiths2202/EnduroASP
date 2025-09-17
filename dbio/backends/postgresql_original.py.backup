@@ -1,0 +1,887 @@
+"""
+PostgreSQL Backend for DBIO
+"""
+
+import logging
+import psycopg2
+from psycopg2 import pool
+from psycopg2.extras import RealDictCursor, Json
+from typing import Dict, Any, Optional, List
+import json
+from datetime import datetime
+
+from .base import BaseBackend, TransactionMixin
+from ..exceptions import ConnectionError, ValidationError, TransactionError
+
+logger = logging.getLogger(__name__)
+
+
+class PostgreSQLBackend(BaseBackend, TransactionMixin):
+    """PostgreSQL implementation of catalog storage."""
+    
+    def __init__(self, config: Dict[str, Any]):
+        """
+        Initialize PostgreSQL backend.
+        
+        Args:
+            config: PostgreSQL configuration
+        """
+        super().__init__(config)
+        self.connection_pool = None
+        self.current_connection = None
+        self._init_connection_pool()
+    
+    def _init_connection_pool(self):
+        """Initialize connection pool."""
+        try:
+            conn_params = {
+                'host': self.config.get('host', 'localhost'),
+                'port': self.config.get('port', 5432),
+                'database': self.config.get('database', 'ofasp'),
+                'user': self.config.get('user', 'aspuser'),
+                'password': self.config.get('password', 'aspuser123'),
+            }
+            
+            pool_size = self.config.get('pool_size', 20)
+            max_overflow = self.config.get('max_overflow', 10)
+            
+            self.connection_pool = psycopg2.pool.ThreadedConnectionPool(
+                minconn=1,
+                maxconn=pool_size + max_overflow,
+                **conn_params
+            )
+            
+            logger.info("PostgreSQL connection pool initialized")
+            
+        except Exception as e:
+            logger.error(f"Failed to initialize PostgreSQL pool: {e}")
+            raise ConnectionError(f"Cannot connect to PostgreSQL: {str(e)}")
+    
+    def _get_connection(self):
+        """Get connection from pool."""
+        if self.current_connection:
+            return self.current_connection
+        return self.connection_pool.getconn()
+    
+    def _put_connection(self, conn):
+        """Return connection to pool."""
+        if self.current_connection:
+            return  # Don't return transaction connections
+        self.connection_pool.putconn(conn)
+    
+    def get_all_objects(self) -> Dict[str, Any]:
+        """Get all objects in catalog.json format with volume->library->object hierarchy."""
+        conn = self._get_connection()
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                # Get all objects with their details using the existing v_all_objects view
+                cursor.execute("""
+                    SELECT v.volume_name, l.library_name, o.object_name, o.object_type,
+                           o.object_path, o.file_size, o.created_at, o.updated_at,
+                           -- Program specific fields
+                           p.pgm_type, p.encoding as pgm_encoding,
+                           -- Dataset specific fields  
+                           d.rec_type, d.rec_len, d.encoding as ds_encoding,
+                           -- Map specific fields
+                           m.map_type, m.width as map_width, m.height as map_height,
+                           -- Copybook specific fields
+                           c.copybook_type, c.encoding as cb_encoding,
+                           -- Job specific fields
+                           j.job_type, j.schedule_info,
+                           -- Layout specific fields
+                           lay.layout_type
+                    FROM aspuser.objects o
+                    JOIN aspuser.libraries l ON o.library_id = l.library_id
+                    JOIN aspuser.volumes v ON o.volume_id = v.volume_id
+                    LEFT JOIN aspuser.programs p ON o.object_id = p.object_id
+                    LEFT JOIN aspuser.datasets d ON o.object_id = d.object_id
+                    LEFT JOIN aspuser.maps m ON o.object_id = m.object_id
+                    LEFT JOIN aspuser.copybooks c ON o.object_id = c.object_id
+                    LEFT JOIN aspuser.jobs j ON o.object_id = j.object_id
+                    LEFT JOIN aspuser.layouts lay ON o.object_id = lay.object_id
+                    ORDER BY v.volume_name, l.library_name, o.object_name
+                """)
+                
+                results = cursor.fetchall()
+                catalog = {}
+                
+                # Build hierarchical structure
+                for row in results:
+                    volume = row['volume_name']
+                    library = row['library_name'] 
+                    object_name = row['object_name']
+                    
+                    # Ensure volume exists
+                    if volume not in catalog:
+                        catalog[volume] = {}
+                    
+                    # Ensure library exists
+                    if library not in catalog[volume]:
+                        catalog[volume][library] = {}
+                    
+                    # Build object attributes based on type
+                    attributes = self._build_object_attributes(row)
+                    catalog[volume][library][object_name] = attributes
+                
+                return catalog
+                    
+        except Exception as e:
+            logger.error(f"Error getting all objects: {e}")
+            raise
+        finally:
+            self._put_connection(conn)
+    
+    def _build_object_attributes(self, row: Dict[str, Any]) -> Dict[str, Any]:
+        """Build object attributes dictionary from database row."""
+        # Base attributes for all objects
+        attributes = {
+            'TYPE': row['object_type'],
+            'CREATED': row['created_at'].isoformat() + 'Z' if row['created_at'] else None,
+            'UPDATED': row['updated_at'].isoformat() + 'Z' if row['updated_at'] else None,
+        }
+        
+        # Add type-specific attributes
+        obj_type = row['object_type']
+        
+        if obj_type == 'PGM' and row['pgm_type']:
+            attributes.update({
+                'PGMTYPE': row['pgm_type'],
+                'PGMNAME': row['object_name'],
+                'VERSION': '1.0',  # Default version
+            })
+            if row['pgm_encoding']:
+                attributes['ENCODING'] = row['pgm_encoding']
+                
+        elif obj_type == 'DATASET':
+            attributes.update({
+                'RECTYPE': row['rec_type'] or 'FB',
+                'RECLEN': row['rec_len'] or 80,
+                'ENCODING': row['ds_encoding'] or 'utf-8',
+            })
+            
+        elif obj_type == 'MAP':
+            attributes.update({
+                'MAPTYPE': row['map_type'] or 'SMED',
+                'MAPFILE': row['object_name'],
+                'ROWS': row['map_height'] or 24,
+                'COLS': row['map_width'] or 80,
+            })
+            
+        elif obj_type == 'COPYBOOK':
+            attributes.update({
+                'COPYBOOKTYPE': row['copybook_type'] or 'COBOL',
+                'SOURCEFILE': row['object_name'],
+            })
+            if row['cb_encoding']:
+                attributes['ENCODING'] = row['cb_encoding']
+                
+        elif obj_type == 'JOB':
+            attributes.update({
+                'JOBTYPE': row['job_type'] or 'BATCH',
+                'SCHEDULE': row['schedule_info'] or 'MANUAL',
+            })
+                
+        elif obj_type == 'LAYOUT':
+            attributes.update({
+                'LAYOUT_TYPE': row['layout_type'] or 'FB',
+                'RECFM': 'FB',  # Default
+                'LRECL': '80',  # Default
+            })
+        
+        return attributes
+
+    def get_object(self, volume: str, library: str, object_name: str) -> Optional[Dict[str, Any]]:
+        """Get a specific object."""
+        conn = self._get_connection()
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                cursor.execute("""
+                    SELECT v.volume_name, l.library_name, o.object_name, o.object_type,
+                           o.object_path, o.file_size, o.created_at, o.updated_at,
+                           -- Program specific fields
+                           p.pgm_type, p.encoding as pgm_encoding,
+                           -- Dataset specific fields  
+                           d.rec_type, d.rec_len, d.encoding as ds_encoding,
+                           -- Map specific fields
+                           m.map_type, m.width as map_width, m.height as map_height,
+                           -- Copybook specific fields
+                           c.copybook_type, c.encoding as cb_encoding,
+                           -- Job specific fields
+                           j.job_type, j.schedule_info,
+                           -- Layout specific fields
+                           lay.layout_type
+                    FROM aspuser.objects o
+                    JOIN aspuser.libraries l ON o.library_id = l.library_id
+                    JOIN aspuser.volumes v ON o.volume_id = v.volume_id
+                    LEFT JOIN aspuser.programs p ON o.object_id = p.object_id
+                    LEFT JOIN aspuser.datasets d ON o.object_id = d.object_id
+                    LEFT JOIN aspuser.maps m ON o.object_id = m.object_id
+                    LEFT JOIN aspuser.copybooks c ON o.object_id = c.object_id
+                    LEFT JOIN aspuser.jobs j ON o.object_id = j.object_id
+                    LEFT JOIN aspuser.layouts lay ON o.object_id = lay.object_id
+                    WHERE v.volume_name = %s AND l.library_name = %s AND o.object_name = %s
+                """, (volume, library, object_name))
+                
+                result = cursor.fetchone()
+                if result:
+                    return self._build_object_attributes(result)
+                return None
+                
+        except Exception as e:
+            logger.error(f"Error getting object {volume}.{library}.{object_name}: {e}")
+            raise
+        finally:
+            self._put_connection(conn)
+    
+    def update_object(self, volume: str, library: str, object_name: str, 
+                     attributes: Dict[str, Any]) -> bool:
+        """Update or create an object."""
+        conn = self._get_connection()
+        try:
+            with conn.cursor() as cursor:
+                object_type = attributes.get('TYPE', 'DATASET')
+                current_time = datetime.utcnow()
+                
+                # Step 1: Get or create volume
+                cursor.execute("""
+                    INSERT INTO aspuser.volumes (volume_name, volume_path, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s)
+                    ON CONFLICT (volume_name) 
+                    DO UPDATE SET updated_at = EXCLUDED.updated_at
+                    RETURNING volume_id
+                """, (volume, f"/volume/{volume}", current_time, current_time))
+                
+                volume_id = cursor.fetchone()[0]
+                
+                # Step 2: Get or create library
+                cursor.execute("""
+                    INSERT INTO aspuser.libraries (volume_id, library_name, library_path, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s)
+                    ON CONFLICT (volume_id, library_name) 
+                    DO UPDATE SET updated_at = EXCLUDED.updated_at
+                    RETURNING library_id
+                """, (volume_id, library, f"/volume/{volume}/{library}", current_time, current_time))
+                
+                library_id = cursor.fetchone()[0]
+                
+                # Step 3: Get or create object
+                object_path = f"/volume/{volume}/{library}/{object_name}"
+                cursor.execute("""
+                    INSERT INTO aspuser.objects (volume_id, library_id, object_name, object_type, 
+                                               object_path, file_size, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
+                    ON CONFLICT (volume_id, library_id, object_name) 
+                    DO UPDATE SET object_type = EXCLUDED.object_type, 
+                                  updated_at = EXCLUDED.updated_at
+                    RETURNING object_id
+                """, (volume_id, library_id, object_name, object_type, object_path, 
+                      attributes.get('file_size', 0), current_time, current_time))
+                
+                object_id = cursor.fetchone()[0]
+                
+                # Step 4: Update type-specific table
+                self._update_type_specific_table(cursor, object_id, object_type, attributes)
+                
+                if not self.current_connection:
+                    conn.commit()
+                
+                logger.debug(f"Updated object {volume}.{library}.{object_name}")
+                return True
+                
+        except Exception as e:
+            if not self.current_connection:
+                conn.rollback()
+            logger.error(f"Error updating object {volume}.{library}.{object_name}: {e}")
+            raise
+        finally:
+            self._put_connection(conn)
+
+    def _update_type_specific_table(self, cursor, object_id: int, object_type: str, 
+                                   attributes: Dict[str, Any]):
+        """Update type-specific table with object attributes."""
+        current_time = datetime.utcnow()
+        
+        if object_type == 'PGM':
+            # Check if program record exists
+            cursor.execute("SELECT program_id FROM aspuser.programs WHERE object_id = %s", (object_id,))
+            exists = cursor.fetchone()
+            
+            if exists:
+                # Update existing record
+                cursor.execute("""
+                    UPDATE aspuser.programs 
+                    SET pgm_type = %s, encoding = %s, updated_at = %s
+                    WHERE object_id = %s
+                """, (attributes.get('PGMTYPE', 'JAVA'), 
+                      attributes.get('ENCODING', 'UTF-8'),
+                      current_time, object_id))
+            else:
+                # Insert new record
+                cursor.execute("""
+                    INSERT INTO aspuser.programs (object_id, pgm_type, encoding, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, (object_id, 
+                      attributes.get('PGMTYPE', 'JAVA'), 
+                      attributes.get('ENCODING', 'UTF-8'),
+                      current_time, current_time))
+                  
+        elif object_type == 'DATASET':
+            # Check if dataset record exists
+            cursor.execute("SELECT dataset_id FROM aspuser.datasets WHERE object_id = %s", (object_id,))
+            exists = cursor.fetchone()
+            
+            if exists:
+                # Update existing record
+                cursor.execute("""
+                    UPDATE aspuser.datasets 
+                    SET rec_type = %s, rec_len = %s, encoding = %s, updated_at = %s
+                    WHERE object_id = %s
+                """, (attributes.get('RECTYPE', 'FB'), 
+                      attributes.get('RECLEN', 80),
+                      attributes.get('ENCODING', 'utf-8'),
+                      current_time, object_id))
+            else:
+                # Insert new record
+                cursor.execute("""
+                    INSERT INTO aspuser.datasets (object_id, rec_type, rec_len, encoding, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """, (object_id, 
+                      attributes.get('RECTYPE', 'FB'), 
+                      attributes.get('RECLEN', 80),
+                      attributes.get('ENCODING', 'utf-8'),
+                      current_time, current_time))
+                  
+        elif object_type == 'MAP':
+            # Check if map record exists
+            cursor.execute("SELECT map_id FROM aspuser.maps WHERE object_id = %s", (object_id,))
+            exists = cursor.fetchone()
+            
+            if exists:
+                # Update existing record
+                cursor.execute("""
+                    UPDATE aspuser.maps 
+                    SET map_type = %s, width = %s, height = %s, updated_at = %s
+                    WHERE object_id = %s
+                """, (attributes.get('MAPTYPE', 'SMED'), 
+                      attributes.get('COLS', 80),
+                      attributes.get('ROWS', 24),
+                      current_time, object_id))
+            else:
+                # Insert new record
+                cursor.execute("""
+                    INSERT INTO aspuser.maps (object_id, map_type, width, height, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s, %s)
+                """, (object_id, 
+                      attributes.get('MAPTYPE', 'SMED'), 
+                      attributes.get('COLS', 80),
+                      attributes.get('ROWS', 24),
+                      current_time, current_time))
+                  
+        elif object_type == 'COPYBOOK':
+            # Check if copybook record exists
+            cursor.execute("SELECT copybook_id FROM aspuser.copybooks WHERE object_id = %s", (object_id,))
+            exists = cursor.fetchone()
+            
+            if exists:
+                # Update existing record
+                cursor.execute("""
+                    UPDATE aspuser.copybooks 
+                    SET copybook_type = %s, encoding = %s, updated_at = %s
+                    WHERE object_id = %s
+                """, (attributes.get('COPYBOOKTYPE', 'COBOL'), 
+                      attributes.get('ENCODING', 'shift_jis'),
+                      current_time, object_id))
+            else:
+                # Insert new record
+                cursor.execute("""
+                    INSERT INTO aspuser.copybooks (object_id, copybook_type, encoding, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, (object_id, 
+                      attributes.get('COPYBOOKTYPE', 'COBOL'), 
+                      attributes.get('ENCODING', 'shift_jis'),
+                      current_time, current_time))
+                  
+        elif object_type == 'JOB':
+            # Check if job record exists
+            cursor.execute("SELECT job_id FROM aspuser.jobs WHERE object_id = %s", (object_id,))
+            exists = cursor.fetchone()
+            
+            if exists:
+                # Update existing record
+                cursor.execute("""
+                    UPDATE aspuser.jobs 
+                    SET job_type = %s, schedule_info = %s, updated_at = %s
+                    WHERE object_id = %s
+                """, (attributes.get('JOBTYPE', 'BATCH'), 
+                      attributes.get('SCHEDULE', 'MANUAL'),
+                      current_time, object_id))
+            else:
+                # Insert new record
+                cursor.execute("""
+                    INSERT INTO aspuser.jobs (object_id, job_type, schedule_info, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s, %s)
+                """, (object_id, 
+                      attributes.get('JOBTYPE', 'BATCH'), 
+                      attributes.get('SCHEDULE', 'MANUAL'),
+                      current_time, current_time))
+                  
+        elif object_type == 'LAYOUT':
+            # Check if layout record exists
+            cursor.execute("SELECT layout_id FROM aspuser.layouts WHERE object_id = %s", (object_id,))
+            exists = cursor.fetchone()
+            
+            if exists:
+                # Update existing record
+                cursor.execute("""
+                    UPDATE aspuser.layouts 
+                    SET layout_type = %s, updated_at = %s
+                    WHERE object_id = %s
+                """, (attributes.get('LAYOUT_TYPE', 'FB'), 
+                      current_time, object_id))
+            else:
+                # Insert new record
+                cursor.execute("""
+                    INSERT INTO aspuser.layouts (object_id, layout_type, created_at, updated_at)
+                    VALUES (%s, %s, %s, %s)
+                """, (object_id, 
+                      attributes.get('LAYOUT_TYPE', 'FB'), 
+                      current_time, current_time))
+    
+    def delete_object(self, volume: str, library: str, object_name: str) -> bool:
+        """Delete an object and its type-specific data."""
+        conn = self._get_connection()
+        try:
+            with conn.cursor() as cursor:
+                # Get the object_id first
+                cursor.execute("""
+                    SELECT o.object_id, o.object_type
+                    FROM aspuser.objects o
+                    JOIN aspuser.libraries l ON o.library_id = l.library_id
+                    JOIN aspuser.volumes v ON o.volume_id = v.volume_id
+                    WHERE v.volume_name = %s AND l.library_name = %s AND o.object_name = %s
+                """, (volume, library, object_name))
+                
+                result = cursor.fetchone()
+                if not result:
+                    return False
+                
+                object_id, object_type = result
+                
+                # Delete from type-specific table first (foreign key constraint)
+                if object_type == 'PGM':
+                    cursor.execute("DELETE FROM aspuser.programs WHERE object_id = %s", (object_id,))
+                elif object_type == 'DATASET':
+                    cursor.execute("DELETE FROM aspuser.datasets WHERE object_id = %s", (object_id,))
+                elif object_type == 'MAP':
+                    cursor.execute("DELETE FROM aspuser.maps WHERE object_id = %s", (object_id,))
+                elif object_type == 'COPYBOOK':
+                    cursor.execute("DELETE FROM aspuser.copybooks WHERE object_id = %s", (object_id,))
+                elif object_type == 'JOB':
+                    cursor.execute("DELETE FROM aspuser.jobs WHERE object_id = %s", (object_id,))
+                elif object_type == 'LAYOUT':
+                    cursor.execute("DELETE FROM aspuser.layouts WHERE object_id = %s", (object_id,))
+                
+                # Delete the main object
+                cursor.execute("DELETE FROM aspuser.objects WHERE object_id = %s", (object_id,))
+                
+                deleted = cursor.rowcount > 0
+                
+                if not self.current_connection:
+                    conn.commit()
+                
+                logger.debug(f"Deleted object {volume}.{library}.{object_name}")
+                return deleted
+                
+        except Exception as e:
+            if not self.current_connection:
+                conn.rollback()
+            logger.error(f"Error deleting object {volume}.{library}.{object_name}: {e}")
+            raise
+        finally:
+            self._put_connection(conn)
+    
+    def query_objects(self, filters: Optional[Dict[str, Any]] = None,
+                     sort: Optional[List[tuple]] = None,
+                     limit: Optional[int] = None) -> List[Dict[str, Any]]:
+        """Query objects with filters and sorting."""
+        conn = self._get_connection()
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                base_query = """
+                    SELECT v.volume_name, l.library_name, o.object_name, o.object_type,
+                           o.object_path, o.file_size, o.created_at, o.updated_at,
+                           -- Program specific fields
+                           p.pgm_type, p.encoding as pgm_encoding,
+                           -- Dataset specific fields  
+                           d.rec_type, d.rec_len, d.encoding as ds_encoding,
+                           -- Map specific fields
+                           m.map_type, m.width as map_width, m.height as map_height,
+                           -- Copybook specific fields
+                           c.copybook_type, c.encoding as cb_encoding,
+                           -- Job specific fields
+                           j.job_type, j.schedule_info,
+                           -- Layout specific fields
+                           lay.layout_type
+                    FROM aspuser.objects o
+                    JOIN aspuser.libraries l ON o.library_id = l.library_id
+                    JOIN aspuser.volumes v ON o.volume_id = v.volume_id
+                    LEFT JOIN aspuser.programs p ON o.object_id = p.object_id
+                    LEFT JOIN aspuser.datasets d ON o.object_id = d.object_id
+                    LEFT JOIN aspuser.maps m ON o.object_id = m.object_id
+                    LEFT JOIN aspuser.copybooks c ON o.object_id = c.object_id
+                    LEFT JOIN aspuser.jobs j ON o.object_id = j.object_id
+                    LEFT JOIN aspuser.layouts lay ON o.object_id = lay.object_id
+                    WHERE 1=1
+                """
+                params = []
+                
+                # Apply filters
+                if filters:
+                    for key, value in filters.items():
+                        if key == 'object_type':
+                            base_query += " AND o.object_type = %s"
+                            params.append(value)
+                        elif key == 'volume':
+                            base_query += " AND v.volume_name = %s"
+                            params.append(value)
+                        elif key == 'library':
+                            base_query += " AND l.library_name = %s"
+                            params.append(value)
+                        elif key == 'pgm_type':
+                            base_query += " AND p.pgm_type = %s"
+                            params.append(value)
+                        elif key == 'rec_type':
+                            base_query += " AND d.rec_type = %s"
+                            params.append(value)
+                        elif key == 'map_type':
+                            base_query += " AND m.map_type = %s"
+                            params.append(value)
+                
+                # Apply sorting
+                if sort:
+                    order_clauses = []
+                    for field, direction in sort:
+                        if field in ['volume_name', 'library_name', 'object_name', 'object_type']:
+                            order_clauses.append(f"{field} {direction}")
+                        elif field == 'created_at':
+                            order_clauses.append(f"o.created_at {direction}")
+                        elif field == 'updated_at':
+                            order_clauses.append(f"o.updated_at {direction}")
+                    if order_clauses:
+                        base_query += f" ORDER BY {', '.join(order_clauses)}"
+                else:
+                    base_query += " ORDER BY v.volume_name, l.library_name, o.object_name"
+                
+                # Apply limit
+                if limit:
+                    base_query += " LIMIT %s"
+                    params.append(limit)
+                
+                cursor.execute(base_query, params)
+                results = cursor.fetchall()
+                
+                # Convert to catalog format
+                objects = []
+                for row in results:
+                    obj_data = {
+                        'volume_name': row['volume_name'],
+                        'library_name': row['library_name'],
+                        'object_name': row['object_name'],
+                        'attributes': self._build_object_attributes(row)
+                    }
+                    objects.append(obj_data)
+                
+                return objects
+                
+        except Exception as e:
+            logger.error(f"Error querying objects: {e}")
+            raise
+        finally:
+            self._put_connection(conn)
+    
+    def search_objects(self, query: str, object_type: Optional[str] = None) -> List[Dict[str, Any]]:
+        """Full-text search across objects."""
+        conn = self._get_connection()
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                # Simple pattern matching search since full-text search may not be configured
+                sql = """
+                    SELECT v.volume_name, l.library_name, o.object_name, o.object_type,
+                           o.object_path, o.file_size, o.created_at, o.updated_at,
+                           -- Program specific fields
+                           p.pgm_type, p.encoding as pgm_encoding,
+                           -- Dataset specific fields  
+                           d.rec_type, d.rec_len, d.encoding as ds_encoding,
+                           -- Map specific fields
+                           m.map_type, m.width as map_width, m.height as map_height,
+                           -- Copybook specific fields
+                           c.copybook_type, c.encoding as cb_encoding,
+                           -- Job specific fields
+                           j.job_type, j.schedule_info,
+                           -- Layout specific fields
+                           lay.layout_type
+                    FROM aspuser.objects o
+                    JOIN aspuser.libraries l ON o.library_id = l.library_id
+                    JOIN aspuser.volumes v ON o.volume_id = v.volume_id
+                    LEFT JOIN aspuser.programs p ON o.object_id = p.object_id
+                    LEFT JOIN aspuser.datasets d ON o.object_id = d.object_id
+                    LEFT JOIN aspuser.maps m ON o.object_id = m.object_id
+                    LEFT JOIN aspuser.copybooks c ON o.object_id = c.object_id
+                    LEFT JOIN aspuser.jobs j ON o.object_id = j.object_id
+                    LEFT JOIN aspuser.layouts lay ON o.object_id = lay.object_id
+                    WHERE (o.object_name ILIKE %s OR v.volume_name ILIKE %s OR l.library_name ILIKE %s)
+                """
+                search_pattern = f"%{query}%"
+                params = [search_pattern, search_pattern, search_pattern]
+                
+                if object_type:
+                    sql += " AND o.object_type = %s"
+                    params.append(object_type)
+                
+                sql += " ORDER BY v.volume_name, l.library_name, o.object_name"
+                
+                cursor.execute(sql, params)
+                results = cursor.fetchall()
+                
+                # Convert to catalog format
+                objects = []
+                for row in results:
+                    obj_data = {
+                        'volume_name': row['volume_name'],
+                        'library_name': row['library_name'],
+                        'object_name': row['object_name'],
+                        'attributes': self._build_object_attributes(row)
+                    }
+                    objects.append(obj_data)
+                
+                return objects
+                
+        except Exception as e:
+            logger.error(f"Error searching objects: {e}")
+            raise
+        finally:
+            self._put_connection(conn)
+    
+    def bulk_operations(self, operations: List[Dict[str, Any]]) -> Dict[str, Any]:
+        """Perform bulk operations."""
+        conn = self._get_connection()
+        stats = {'created': 0, 'updated': 0, 'deleted': 0, 'errors': 0}
+        
+        try:
+            with conn.cursor() as cursor:
+                # Begin transaction for bulk operations
+                if not self.current_connection:
+                    conn.autocommit = False
+                
+                for operation in operations:
+                    try:
+                        op_type = operation.get('type')
+                        volume = operation.get('volume')
+                        library = operation.get('library')
+                        object_name = operation.get('object_name')
+                        
+                        if op_type == 'update':
+                            attributes = operation.get('attributes', {})
+                            success = self.update_object(volume, library, object_name, attributes)
+                            if success:
+                                stats['updated'] += 1
+                            
+                        elif op_type == 'delete':
+                            success = self.delete_object(volume, library, object_name) 
+                            if success:
+                                stats['deleted'] += 1
+                            
+                    except Exception as e:
+                        logger.error(f"Error in bulk operation: {e}")
+                        stats['errors'] += 1
+                
+                if not self.current_connection:
+                    conn.commit()
+                    
+        except Exception as e:
+            if not self.current_connection:
+                conn.rollback()
+            logger.error(f"Error in bulk operations: {e}")
+            raise
+        finally:
+            if not self.current_connection:
+                conn.autocommit = True
+            self._put_connection(conn)
+        
+        return stats
+    
+    def get_statistics(self) -> Dict[str, Any]:
+        """Get backend statistics."""
+        conn = self._get_connection()
+        try:
+            with conn.cursor(cursor_factory=RealDictCursor) as cursor:
+                # Object counts by type
+                cursor.execute("""
+                    SELECT object_type, COUNT(*) as count
+                    FROM aspuser.objects
+                    GROUP BY object_type
+                """)
+                object_counts = {row['object_type']: row['count'] for row in cursor.fetchall()}
+                
+                # Volume/Library counts
+                cursor.execute("SELECT COUNT(*) FROM aspuser.volumes")
+                volume_count = cursor.fetchone()['count']
+                
+                cursor.execute("SELECT COUNT(*) FROM aspuser.libraries")
+                library_count = cursor.fetchone()['count']
+                
+                # Total objects
+                cursor.execute("SELECT COUNT(*) FROM aspuser.objects")
+                total_objects = cursor.fetchone()['count']
+                
+                # Recent activity
+                cursor.execute("""
+                    SELECT COUNT(*) 
+                    FROM aspuser.objects 
+                    WHERE updated_at > CURRENT_TIMESTAMP - INTERVAL '24 hours'
+                """)
+                recent_updates = cursor.fetchone()['count']
+                
+                return {
+                    'backend': 'postgresql',
+                    'total_objects': total_objects,
+                    'volumes': volume_count,
+                    'libraries': library_count,
+                    'objects_by_type': object_counts,
+                    'recent_updates_24h': recent_updates,
+                    'connection_pool_size': self.connection_pool.maxconn if self.connection_pool else 0,
+                    'timestamp': datetime.utcnow().isoformat()
+                }
+                
+        except Exception as e:
+            logger.error(f"Error getting statistics: {e}")
+            raise
+        finally:
+            self._put_connection(conn)
+    
+    def import_catalog(self, catalog_data: Dict[str, Any], merge: bool = False) -> Dict[str, Any]:
+        """Import catalog data from dictionary."""
+        conn = self._get_connection()
+        stats = {'volumes': 0, 'libraries': 0, 'objects': 0, 'errors': 0}
+        
+        try:
+            with conn.cursor() as cursor:
+                conn.autocommit = False
+                
+                # Clear existing data if not merging
+                if not merge:
+                    cursor.execute("TRUNCATE aspuser.volumes CASCADE")
+                
+                # Import data
+                for volume_name, volume_data in catalog_data.items():
+                    try:
+                        stats['volumes'] += 1
+                        
+                        for library_name, library_data in volume_data.items():
+                            try:
+                                stats['libraries'] += 1
+                                
+                                for object_name, object_data in library_data.items():
+                                    try:
+                                        # Import object using existing update_object method
+                                        success = self.update_object(volume_name, library_name, 
+                                                                   object_name, object_data)
+                                        if success:
+                                            stats['objects'] += 1
+                                        else:
+                                            stats['errors'] += 1
+                                        
+                                    except Exception as e:
+                                        logger.error(f"Error importing object {object_name}: {e}")
+                                        stats['errors'] += 1
+                                        
+                            except Exception as e:
+                                logger.error(f"Error importing library {library_name}: {e}")
+                                stats['errors'] += 1
+                                
+                    except Exception as e:
+                        logger.error(f"Error importing volume {volume_name}: {e}")
+                        stats['errors'] += 1
+                
+                conn.commit()
+                
+        except Exception as e:
+            conn.rollback()
+            logger.error(f"Error importing catalog: {e}")
+            raise
+        finally:
+            conn.autocommit = True
+            self._put_connection(conn)
+        
+        return stats
+    
+    def health_check(self) -> Dict[str, Any]:
+        """Check PostgreSQL backend health."""
+        try:
+            conn = self._get_connection()
+            with conn.cursor() as cursor:
+                cursor.execute("SELECT 1")
+                result = cursor.fetchone()
+                
+            self._put_connection(conn)
+            
+            return {
+                'status': 'healthy',
+                'backend': 'postgresql',
+                'connection': 'ok',
+                'query_test': 'ok' if result else 'failed',
+                'timestamp': datetime.utcnow().isoformat()
+            }
+            
+        except Exception as e:
+            return {
+                'status': 'unhealthy',
+                'backend': 'postgresql',
+                'error': str(e),
+                'timestamp': datetime.utcnow().isoformat()
+            }
+    
+    # Transaction support methods
+    def begin_transaction(self):
+        """Begin a transaction."""
+        if self.current_connection:
+            raise TransactionError("Transaction already active")
+        
+        self.current_connection = self.connection_pool.getconn()
+        self.current_connection.autocommit = False
+        logger.debug("Transaction started")
+    
+    def commit_transaction(self):
+        """Commit current transaction."""
+        if not self.current_connection:
+            raise TransactionError("No active transaction")
+        
+        try:
+            self.current_connection.commit()
+            logger.debug("Transaction committed")
+        finally:
+            self.current_connection.autocommit = True
+            self.connection_pool.putconn(self.current_connection)
+            self.current_connection = None
+    
+    def rollback_transaction(self):
+        """Rollback current transaction."""
+        if not self.current_connection:
+            raise TransactionError("No active transaction")
+        
+        try:
+            self.current_connection.rollback()
+            logger.debug("Transaction rolled back")
+        finally:
+            self.current_connection.autocommit = True
+            self.connection_pool.putconn(self.current_connection)
+            self.current_connection = None
+    
+    def close(self):
+        """Close connection pool."""
+        if self.current_connection:
+            self.rollback_transaction()
+        
+        if self.connection_pool:
+            self.connection_pool.closeall()
+            logger.info("PostgreSQL connection pool closed")

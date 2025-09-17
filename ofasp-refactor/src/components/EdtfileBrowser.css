@@ -1,0 +1,219 @@
+/* EDTFILE Browser Styles */
+.edtfile-browser {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 1000px;
+  height: 600px;
+  background: #000000;
+  color: #ffffff;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.1;
+  overflow: hidden;
+  outline: none;
+  z-index: 1000;
+  border: 2px solid #444444;
+  border-radius: 4px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.8);
+}
+
+.edtfile-browser.dark {
+  background: #000000;
+  color: #ffffff;
+}
+
+.edtfile-browser.light {
+  background: #000000;
+  color: #ffffff;
+}
+
+/* Data Area - takes most of the screen */
+.data-area {
+  height: calc(100% - 60px); /* Reserve space for status and command */
+  overflow-y: auto;
+  padding: 8px;
+  white-space: nowrap;
+}
+
+.data-row {
+  margin-bottom: 4px;
+}
+
+.data-line {
+  font-family: 'MS Gothic', 'Consolas', monospace;
+  white-space: pre;
+  letter-spacing: 0;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.data-char {
+  display: inline;
+  position: relative;
+}
+
+.data-char.cursor {
+  background: #00ff00;
+  color: #000000;
+  font-weight: bold;
+  box-shadow: 0 0 3px #00ff00;
+  outline: 1px solid #00ff00;
+}
+
+/* Hex Overlay */
+.hex-overlay-line {
+  font-family: 'Consolas', 'MS Gothic', monospace;
+  font-size: 11px;
+  color: #00ff00;
+  white-space: pre;
+  margin-top: 2px;
+  line-height: 1;
+  opacity: 0.8;
+}
+
+.hex-char {
+  display: inline;
+  font-size: 11px;
+  color: #00ff00;
+}
+
+.hex-char.cursor {
+  background: rgba(0, 255, 0, 0.2);
+  color: #00ff00;
+  font-weight: bold;
+}
+
+/* Status Bar */
+.status-bar {
+  position: absolute;
+  bottom: 30px;
+  left: 0;
+  right: 0;
+  height: 25px;
+  background: #333333;
+  border-top: 1px solid #666666;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 10px;
+  font-size: 11px;
+}
+
+.status-left {
+  display: flex;
+  align-items: center;
+}
+
+.status-right {
+  display: flex;
+  align-items: center;
+}
+
+.hex-info {
+  color: #00ff00;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+}
+
+.zoom-info {
+  color: #ffff00;
+  margin-left: 10px;
+}
+
+/* Command Line */
+.command-line {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 30px;
+  background: #222222;
+  border-top: 1px solid #444444;
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  font-size: 11px;
+  color: #ffffff;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+}
+
+/* Help Overlay */
+.help-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 100;
+}
+
+.help-window {
+  background: #1a1a1a;
+  border: 2px solid #00ff00;
+  border-radius: 8px;
+  padding: 20px;
+  max-width: 600px;
+  max-height: 80%;
+  overflow-y: auto;
+  box-shadow: 0 4px 20px rgba(0, 255, 0, 0.3);
+}
+
+.help-header {
+  font-size: 18px;
+  font-weight: bold;
+  color: #00ff00;
+  margin-bottom: 15px;
+  text-align: center;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+}
+
+.help-content {
+  color: #ffffff;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+}
+
+.help-section {
+  margin-bottom: 15px;
+}
+
+.help-section h4 {
+  color: #00ff88;
+  margin-bottom: 5px;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+}
+
+.help-section div {
+  margin-left: 20px;
+  margin-bottom: 3px;
+  font-family: 'MS Gothic', 'Yu Gothic', 'Hiragino Kaku Gothic Pro', 'Meiryo', 'Courier New', monospace;
+}
+
+.help-footer {
+  margin-top: 20px;
+  text-align: center;
+  color: #ffff00;
+  font-style: italic;
+}
+
+/* Scrollbar */
+.data-area::-webkit-scrollbar {
+  width: 10px;
+}
+
+.data-area::-webkit-scrollbar-track {
+  background: #111111;
+}
+
+.data-area::-webkit-scrollbar-thumb {
+  background: #444444;
+  border-radius: 5px;
+}
+
+.data-area::-webkit-scrollbar-thumb:hover {
+  background: #555555;
+}

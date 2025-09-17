@@ -1,0 +1,272 @@
+[
+  {
+    "query": "What is system command implementation?",
+    "timestamp": 1755425650.3182118,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "Tell me about COBOLG compiler implementation",
+    "timestamp": 1755425631.2053823,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "What is COBOLG compiler?",
+    "timestamp": 1755425631.181802,
+    "results_count": 1,
+    "filters": {}
+  },
+  {
+    "query": "니 이름이 뭐니",
+    "timestamp": 1755424624.3371007,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "CALL명령어에 대해서 알려줘",
+    "timestamp": 1755424588.6077287,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "Tell me about system command implementation in open environments",
+    "timestamp": 1755423734.6632965,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "What is COBOLG compiler and how is it implemented?",
+    "timestamp": 1755423644.5813901,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "COBOLG 컴파일러에 대해서 알려줘",
+    "timestamp": 1755422954.817755,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "지원 가능",
+    "timestamp": 1755422415.893995,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "시스템커맨드",
+    "timestamp": 1755422415.859541,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "GnuCOBOL",
+    "timestamp": 1755422415.8331854,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "COBOLG",
+    "timestamp": 1755422415.8139935,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "구현 방법",
+    "timestamp": 1755422381.956272,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "Open 환경",
+    "timestamp": 1755422381.9095058,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "래퍼 스크립트",
+    "timestamp": 1755422381.8710892,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "SNDMSG 메시지",
+    "timestamp": 1755422381.780328,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "OVRDSPF 디스플레이",
+    "timestamp": 1755422381.7382288,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "CALL 프로그램 호출",
+    "timestamp": 1755422381.6733968,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "COBOLG 컴파일러",
+    "timestamp": 1755422381.599492,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "system command implementation",
+    "timestamp": 1755422174.7928,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "COBOLG compiler",
+    "timestamp": 1755422089.9729996,
+    "results_count": 2,
+    "filters": {}
+  },
+  {
+    "query": "오픈 소스",
+    "timestamp": 1755421879.5331252,
+    "results_count": 0,
+    "filters": {}
+  },
+  {
+    "query": "부분적으로 지원 가능",
+    "timestamp": 1755421879.475662,
+    "results_count": 0,
+    "filters": {}
+  },
+  {
+    "query": "CRTFILE 파일 생성",
+    "timestamp": 1755421879.423837,
+    "results_count": 1,
+    "filters": {}
+  },
+  {
+    "query": "Linux 파일 관리",
+    "timestamp": 1755421879.3921096,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "래퍼 스크립트 개발",
+    "timestamp": 1755421879.3691535,
+    "results_count": 2,
+    "filters": {}
+  },
+  {
+    "query": "시스템 명령어 구현 방법",
+    "timestamp": 1755421879.3469577,
+    "results_count": 0,
+    "filters": {}
+  },
+  {
+    "query": "Open 환경에서 지원가능 여부",
+    "timestamp": 1755421879.3228006,
+    "results_count": 2,
+    "filters": {}
+  },
+  {
+    "query": "SNDMSG 메시지 전송 구현",
+    "timestamp": 1755421879.2995386,
+    "results_count": 1,
+    "filters": {}
+  },
+  {
+    "query": "OVRDSPF display file replacement",
+    "timestamp": 1755421879.2723215,
+    "results_count": 1,
+    "filters": {}
+  },
+  {
+    "query": "CALL 프로그램 호출 지원가능",
+    "timestamp": 1755421879.254893,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "GnuCOBOL wrapper script",
+    "timestamp": 1755421879.2305408,
+    "results_count": 2,
+    "filters": {}
+  },
+  {
+    "query": "COBOLG 컴파일러 구현",
+    "timestamp": 1755421879.2124033,
+    "results_count": 0,
+    "filters": {}
+  },
+  {
+    "query": "시스템 명령어 CRTFILE을 Linux에서 구현하는 방법은?",
+    "timestamp": 1755421820.2238057,
+    "results_count": 4,
+    "filters": {}
+  },
+  {
+    "query": "Korean system command implementation in open environment - SNDMSG message sending",
+    "timestamp": 1755421818.176185,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "How can OVRDSPF be replaced in open environments?",
+    "timestamp": 1755421816.1274934,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "What are the implementation possibilities for CALL command in Linux?",
+    "timestamp": 1755421814.0829315,
+    "results_count": 5,
+    "filters": {}
+  },
+  {
+    "query": "How can COBOLG command be implemented in an open environment?",
+    "timestamp": 1755421812.0408456,
+    "results_count": 3,
+    "filters": {}
+  },
+  {
+    "query": "open environment support",
+    "timestamp": 1755421811.9953,
+    "results_count": 2,
+    "filters": {}
+  },
+  {
+    "query": "wrapper script development",
+    "timestamp": 1755421811.976522,
+    "results_count": 2,
+    "filters": {}
+  },
+  {
+    "query": "시스템 명령어 구현",
+    "timestamp": 1755421811.9569988,
+    "results_count": 1,
+    "filters": {}
+  },
+  {
+    "query": "COBOLG implementation",
+    "timestamp": 1755421811.9326825,
+    "results_count": 0,
+    "filters": {}
+  },
+  {
+    "query": "CHARM 커맨드에 대해서 알려줘",
+    "timestamp": 1755420483.911804,
+    "results_count": 1,
+    "filters": {}
+  },
+  {
+    "query": "CHARM커맨드에 대해서 알려줘",
+    "timestamp": 1755420400.6446304,
+    "results_count": 1,
+    "filters": {}
+  },
+  {
+    "query": "CALL커맨드에 대해서 1000자 이내로 알려줘",
+    "timestamp": 1755420189.5651295,
+    "results_count": 2,
+    "filters": {}
+  }
+]

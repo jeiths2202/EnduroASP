@@ -1,0 +1,18 @@
+{
+  "admin": {
+    "password": "admin123",
+    "pgm": "PGM1"
+  },
+  "user01": {
+    "password": "userpass",
+    "pgm": "PGM2"
+  },
+  "test": {
+    "password": "test123",
+    "pgm": "PGM1"
+  },
+  "demo": {
+    "password": "demo",
+    "pgm": "PGM2"
+  }
+}
