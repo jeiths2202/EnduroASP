@@ -64,11 +64,9 @@ jobs:
         npm ci || npm install
     
     - name: Build OpenASP Refactor
-      env:
-        CI: false
       run: |
         cd ofasp-refactor
-        npm run build
+        CI=false npm run build
     
     - name: Install ASP Manager dependencies
       run: |
@@ -76,11 +74,9 @@ jobs:
         npm ci || npm install
     
     - name: Build ASP Manager
-      env:
-        CI: false
       run: |
         cd asp-manager
-        npm run build
+        CI=false npm run build
 
   test-dslock-suite:
     name: Test dslock_suite (C/C++)
@@ -195,19 +191,17 @@ jobs:
         node-version: '18'
     
     - name: Build production artifacts
-      env:
-        CI: false
       run: |
         # OpenASP Refactor
         cd ofasp-refactor
         npm ci
-        npm run build
+        CI=false npm run build
         cd ..
         
         # ASP Manager  
         cd asp-manager
         npm ci
-        npm run build
+        CI=false npm run build
         cd ..
     
     - name: Archive production artifacts
