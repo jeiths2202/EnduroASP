@@ -53,8 +53,11 @@
   },
   "jest": {
     "transformIgnorePatterns": [
-      "node_modules/(?!(react-markdown|remark-.*|unified|bail|is-plain-obj|trough|vfile|unist-.*|mdast-.*|micromark.*|decode-named-character-reference|character-entities|property-information|hast-.*|space-separated-tokens|comma-separated-tokens|pretty-bytes|zwitch|longest-streak|ccount|escape-string-regexp|markdown-table)/)"
-    ]
+      "node_modules/(?!(react-markdown|remark-.*|unified|bail|is-plain-obj|trough|vfile|unist-.*|mdast-.*|micromark.*|decode-named-character-reference|character-entities|property-information|hast-.*|space-separated-tokens|comma-separated-tokens|pretty-bytes|zwitch|longest-streak|ccount|escape-string-regexp|markdown-table|devlop|trim-lines)/)"
+    ],
+    "moduleNameMapper": {
+      "^react-markdown$": "<rootDir>/src/__mocks__/react-markdown.js"
+    }
   },
   "proxy": "http://localhost:3006",
   "browserslist": {
