@@ -99,13 +99,10 @@ jobs:
         echo "\`\`\`" >> release_notes.md
     
     - name: Create GitHub Release
-      uses: softprops/action-gh-release@v1
-      with:
-        name: EnduroASP ${{ github.ref_name }}
-        body_path: release_notes.md
-        files: |
+      run: |
+        gh release create ${{ github.ref_name }} \
+          --title "EnduroASP ${{ github.ref_name }}" \
+          --notes-file release_notes.md \
           enduroasp-${{ github.ref_name }}.tar.gz
-        draft: false
-        prerelease: false
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
