@@ -1,0 +1,50 @@
+# Python Dependencies for EnduroASP AX
+
+## Core Dependencies
+flask==2.3.3
+flask-cors==4.0.0
+requests==2.31.0
+pathlib2==2.3.7
+psycopg2-binary==2.9.9
+python-dotenv==1.0.0
+
+## Testing Dependencies
+pytest==7.4.3
+pytest-cov==4.1.0
+pytest-asyncio==0.21.1
+
+## Database
+sqlalchemy==2.0.23
+alembic==1.12.1
+
+## Async Support
+aiohttp==3.9.1
+websockets==12.0
+
+## Utilities
+pandas==2.1.3
+numpy==1.26.2
+python-dateutil==2.8.2
+
+## Encoding & Conversion
+chardet==5.2.0
+iconv==1.0.0
+
+## Monitoring
+prometheus-client==0.19.0
+psutil==5.9.6
+
+## AI/ML Support (Optional)
+# ollama==0.1.7
+# chromadb==0.4.18
+# langchain==0.0.340
+
+## Development Tools
+black==23.11.0
+flake8==6.1.0
+mypy==1.7.1
+pre-commit==3.5.0
+
+## Node.js E2E Testing (install via npm)
+# npm i -D @playwright/test
+# npx playwright install --with-deps

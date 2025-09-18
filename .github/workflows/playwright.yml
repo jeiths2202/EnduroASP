@@ -1,0 +1,103 @@
+name: Playwright E2E Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main, develop ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        browser: [chromium, firefox, webkit]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        cache: 'npm'
+
+    - name: Setup Python
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.10'
+
+    - name: Install Node dependencies (root)
+      run: |
+        npm ci
+        npx playwright install --with-deps ${{ matrix.browser }}
+
+    - name: Install Node dependencies (asp-manager)
+      working-directory: ./asp-manager
+      run: npm ci
+
+    - name: Install Node dependencies (ofasp-refactor)
+      working-directory: ./ofasp-refactor
+      run: npm ci
+
+    - name: Install Python dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r ofasp-refactor/server/requirements.txt
+        pip install flask flask-cors requests psycopg2-binary pytest
+
+    - name: Create test environment file
+      run: |
+        echo "NODE_ENV=test" > .env
+        echo "CI=true" >> .env
+        echo "FLASK_ENV=testing" >> .env
+        echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_openasp" >> .env
+
+    - name: Setup PostgreSQL
+      uses: ikalnytskyi/action-setup-postgres@v4
+      with:
+        username: postgres
+        password: postgres
+        database: test_openasp
+        port: 5432
+
+    - name: Initialize database
+      run: |
+        psql -U postgres -d test_openasp -f database/catalog_schema.sql
+        psql -U postgres -d test_openasp -f database/create_asp_terminal_table.sql
+        psql -U postgres -d test_openasp -f database/create_jobinfo_table.sql
+      env:
+        PGPASSWORD: postgres
+
+    - name: Start backend services
+      run: |
+        cd server && python api_server.py &
+        cd ofasp-refactor/server && python chat_api.py &
+        sleep 10
+      env:
+        DATABASE_URL: postgresql://postgres:postgres@localhost:5432/test_openasp
+
+    - name: Run Playwright tests - ${{ matrix.browser }}
+      run: npx playwright test --project=${{ matrix.browser }}
+      env:
+        CI: true
+        PLAYWRIGHT_BROWSERS_PATH: 0
+
+    - name: Upload test artifacts
+      if: failure()
+      uses: actions/upload-artifact@v3
+      with:
+        name: playwright-report-${{ matrix.browser }}
+        path: |
+          playwright-report/
+          test-results/
+
+  test-all-browsers:
+    runs-on: ubuntu-latest
+    needs: test
+
+    steps:
+    - name: All browser tests completed
+      run: echo "All Playwright tests passed successfully!"
