@@ -97,7 +97,9 @@ jobs:
     - name: Install OpenASP Refactor dependencies
       run: |
         cd ofasp-refactor
-        npm ci || npm install
+        npm cache clean --force
+        rm -rf node_modules package-lock.json
+        npm install
 
     - name: Run OpenASP Refactor Tests
       run: |
@@ -112,7 +114,9 @@ jobs:
     - name: Install ASP Manager dependencies
       run: |
         cd asp-manager
-        npm ci || npm install
+        npm cache clean --force
+        rm -rf node_modules package-lock.json
+        npm install
 
     - name: Run ASP Manager Tests
       run: |
@@ -250,12 +254,16 @@ jobs:
       run: |
         # OpenASP Refactor
         cd ofasp-refactor
+        npm cache clean --force
+        rm -rf node_modules package-lock.json
         npm install
         npm run build:prod
         cd ..
 
         # ASP Manager
         cd asp-manager
+        npm cache clean --force
+        rm -rf node_modules package-lock.json
         npm install
         npm run build:prod
         cd ..
