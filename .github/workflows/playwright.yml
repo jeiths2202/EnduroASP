@@ -14,6 +14,21 @@ jobs:
       matrix:
         browser: [chromium, firefox, webkit]
 
+    services:
+      postgres:
+        image: postgres:15
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: test_openasp
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v4
@@ -55,19 +70,19 @@ jobs:
         echo "FLASK_ENV=testing" >> .env
         echo "DATABASE_URL=postgresql://postgres:postgres@localhost:5432/test_openasp" >> .env
 
-    - name: Setup PostgreSQL
-      uses: ikalnytskyi/action-setup-postgres@v4
-      with:
-        username: postgres
-        password: postgres
-        database: test_openasp
-        port: 5432
+    - name: Wait for PostgreSQL
+      run: |
+        for i in {1..30}; do
+          pg_isready -h localhost -p 5432 -U postgres && break
+          echo "Waiting for PostgreSQL..."
+          sleep 1
+        done
 
     - name: Initialize database
       run: |
-        psql -U postgres -d test_openasp -f database/catalog_schema.sql
-        psql -U postgres -d test_openasp -f database/create_asp_terminal_table.sql
-        psql -U postgres -d test_openasp -f database/create_jobinfo_table.sql
+        PGPASSWORD=postgres psql -h localhost -U postgres -d test_openasp -f database/catalog_schema.sql
+        PGPASSWORD=postgres psql -h localhost -U postgres -d test_openasp -f database/create_asp_terminal_table.sql
+        PGPASSWORD=postgres psql -h localhost -U postgres -d test_openasp -f database/create_jobinfo_table.sql
       env:
         PGPASSWORD: postgres
 
