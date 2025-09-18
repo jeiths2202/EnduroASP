@@ -1,0 +1,30 @@
+OpenASP Refactor Project Information
+
+This project is a comprehensive refactoring of the OpenASP system, designed to modernize legacy AS/400 operations.
+
+Key Components:
+- Chat interface powered by Ollama and custom models
+- BitNet B1.58 2B model integration for efficient inference
+- RAG (Retrieval-Augmented Generation) system for document-based queries
+- File management and processing capabilities
+- Multi-language support (Korean, Japanese, English)
+
+Technologies Used:
+- Backend: Python Flask API
+- Frontend: React with TypeScript
+- Database: ChromaDB for vector storage
+- AI Models: Ollama, BitNet B1.58
+- Embeddings: SentenceTransformers with ONNX optimization
+
+System Requirements:
+- Linux environment (tested on WSL2)
+- Python 3.10+
+- Node.js for frontend development
+- Docker for containerized services
+- Sufficient disk space for model storage
+
+Port Configuration:
+- Chat Interface: 3005
+- Chat API: 3006
+- ASP Manager: 3007
+- Ollama: 3014

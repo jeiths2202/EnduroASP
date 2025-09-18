@@ -1,0 +1,140 @@
+version: '3.8'
+
+services:
+  # PostgreSQL Database
+  postgres:
+    image: postgres:15
+    container_name: enduroasp-postgres
+    environment:
+      POSTGRES_USER: aspuser
+      POSTGRES_PASSWORD: aspuser123
+      POSTGRES_DB: ofasp
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    networks:
+      - enduroasp-network
+
+  # Nginx Web Server
+  nginx:
+    image: nginx:alpine
+    container_name: enduroasp-nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - ./ofasp-refactor/build:/usr/share/nginx/html/ofasp-refactor
+      - ./asp-manager/build:/usr/share/nginx/html/asp-manager
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - app
+    networks:
+      - enduroasp-network
+
+  # Zabbix Server
+  zabbix-server:
+    image: zabbix/zabbix-server-pgsql:alpine-latest
+    container_name: enduroasp-zabbix-server
+    environment:
+      DB_SERVER_HOST: postgres
+      POSTGRES_USER: aspuser
+      POSTGRES_PASSWORD: aspuser123
+      POSTGRES_DB: zabbix
+    depends_on:
+      - postgres
+    networks:
+      - enduroasp-network
+
+  # Zabbix Web Interface
+  zabbix-web:
+    image: zabbix/zabbix-web-nginx-pgsql:alpine-latest
+    container_name: enduroasp-zabbix-web
+    environment:
+      ZBX_SERVER_HOST: zabbix-server
+      DB_SERVER_HOST: postgres
+      POSTGRES_USER: aspuser
+      POSTGRES_PASSWORD: aspuser123
+      POSTGRES_DB: zabbix
+      ZBX_SERVER_NAME: EnduroASP Monitoring
+    ports:
+      - "3015:8080"
+    depends_on:
+      - zabbix-server
+      - postgres
+    networks:
+      - enduroasp-network
+
+  # Ollama AI Server
+  ollama:
+    image: ollama/ollama:latest
+    container_name: enduroasp-ollama
+    volumes:
+      - ollama_data:/root/.ollama
+    ports:
+      - "3014:11434"
+    networks:
+      - enduroasp-network
+    command: serve
+
+  # Main Application Container
+  app:
+    build: .
+    container_name: enduroasp-app
+    volumes:
+      - ./data:/data
+      - ./app:/app
+      - ./ofasp-refactor:/app/ofasp-refactor
+      - ./asp-manager:/app/asp-manager
+      - ./server:/app/server
+      - ./ofasp-devops:/app/ofasp-devops
+    ports:
+      # SSH
+      - "2222:22"
+      # Application ports
+      - "3000:3000"  # SMED Map Viewer
+      - "8000:8000"  # API Server
+      - "3001:3001"
+      - "3002:3002"
+      - "3003:3003"  # Python EBCDIC Service
+      - "3004:3004"  # System API Server
+      - "3005:3005"  # EnduroASP Refactor
+      - "3006:3006"  # Chat API Server
+      - "3007:3007"  # ASP Manager
+      - "3008:3008"
+      - "3009:3009"
+      - "3010:3010"  # Grafana
+      - "3011:3011"  # Prometheus
+      - "3012:3012"
+      - "3013:3013"
+      - "3016:3016"  # EnduroASP DevOps
+      - "3017:3017"
+      - "3018:3018"
+      - "3019:3019"
+      - "3020:3020"
+      - "3021:3021"
+      - "3022:3022"
+    environment:
+      - NODE_ENV=development
+      - CI=false
+      - POSTGRES_HOST=postgres
+      - POSTGRES_USER=aspuser
+      - POSTGRES_PASSWORD=aspuser123
+      - POSTGRES_DB=ofasp
+      - OLLAMA_HOST=http://ollama:11434
+    depends_on:
+      - postgres
+      - ollama
+    networks:
+      - enduroasp-network
+    stdin_open: true
+    tty: true
+
+networks:
+  enduroasp-network:
+    driver: bridge
+
+volumes:
+  postgres_data:
+  ollama_data:

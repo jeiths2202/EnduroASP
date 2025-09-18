@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat API Test</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .chat-container {
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+        }
+        #messages {
+            height: 400px;
+            border: 1px solid #ddd;
+            padding: 10px;
+            overflow-y: auto;
+            background: #f9f9f9;
+            margin-bottom: 10px;
+        }
+        .message {
+            margin: 10px 0;
+            padding: 8px;
+            border-radius: 4px;
+        }
+        .user-message {
+            background: #e3f2fd;
+            text-align: right;
+        }
+        .bot-message {
+            background: #f3e5f5;
+        }
+        .loading {
+            color: #666;
+            font-style: italic;
+        }
+        .error {
+            color: red;
+            background: #ffebee;
+        }
+        #inputArea {
+            display: flex;
+            gap: 10px;
+        }
+        #messageInput {
+            flex: 1;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        button {
+            padding: 8px 16px;
+            background: #2196f3;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+    </style>
+</head>
+<body>
+    <h1>Chat API Test</h1>
+    
+    <div class="chat-container">
+        <div id="messages"></div>
+        <div id="inputArea">
+            <input type="text" id="messageInput" placeholder="メッセージを入力してください..." />
+            <button id="sendButton" onclick="sendMessage()">送信</button>
+        </div>
+    </div>
+
+    <script>
+        const messagesDiv = document.getElementById('messages');
+        const messageInput = document.getElementById('messageInput');
+        const sendButton = document.getElementById('sendButton');
+
+        function addMessage(content, isUser = false, isError = false) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'} ${isError ? 'error' : ''}`;
+            messageDiv.textContent = content;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function setLoading(loading) {
+            sendButton.disabled = loading;
+            if (loading) {
+                addMessage('考え中...', false);
+            }
+        }
+
+        async function sendMessage() {
+            const message = messageInput.value.trim();
+            if (!message) return;
+
+            // Add user message
+            addMessage(message, true);
+            messageInput.value = '';
+            setLoading(true);
+
+            try {
+                console.log('Sending message:', message);
+                
+                const response = await fetch('http://localhost:3006/api/chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({
+                        message: message,
+                        files: [],
+                        use_rag: true
+                    }),
+                });
+
+                console.log('Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API error:', errorText);
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('Response data:', data);
+
+                // Remove loading message
+                const loadingMessages = document.querySelectorAll('.loading');
+                loadingMessages.forEach(msg => msg.remove());
+
+                // Add bot response
+                let responseText = data.response || 'No response received';
+                
+                if (data.rag_results && data.rag_results.length > 0) {
+                    responseText += '\n\n📚 参考資料:';
+                    data.rag_results.forEach(result => {
+                        responseText += `\n- ${result.file}`;
+                    });
+                }
+
+                addMessage(responseText);
+
+            } catch (error) {
+                console.error('Error:', error);
+                // Remove loading message
+                const loadingMessages = document.querySelectorAll('.loading');
+                loadingMessages.forEach(msg => msg.remove());
+                
+                addMessage(`エラー: ${error.message}`, false, true);
+            } finally {
+                setLoading(false);
+            }
+        }
+
+        // Enter key support
+        messageInput.addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Test API connection on load
+        window.addEventListener('load', async function() {
+            try {
+                const response = await fetch('http://localhost:3006/api/health');
+                const data = await response.json();
+                console.log('API Health:', data);
+                addMessage('チャットAPIに接続しました ✓');
+            } catch (error) {
+                console.error('API connection failed:', error);
+                addMessage('チャットAPIに接続できませんでした ✗', false, true);
+            }
+        });
+    </script>
+</body>
+</html>
