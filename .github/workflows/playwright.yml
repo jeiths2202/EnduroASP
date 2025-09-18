@@ -48,7 +48,9 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps chromium
+      run: |
+        npx playwright install chromium
+        npx playwright install-deps chromium
 
     - name: Install Node dependencies (asp-manager)
       working-directory: ./asp-manager
@@ -99,7 +101,7 @@ jobs:
       run: npx playwright test --project=${{ matrix.browser }}
       env:
         CI: true
-        PLAYWRIGHT_BROWSERS_PATH: 0
+        PLAYWRIGHT_BROWSERS_PATH: ~/.cache/ms-playwright
 
     - name: Upload test artifacts
       if: failure()
