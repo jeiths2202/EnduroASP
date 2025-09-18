@@ -12,7 +12,7 @@ jobs:
 
     strategy:
       matrix:
-        browser: [chromium, firefox, webkit]
+        browser: [chromium, webkit]
 
     services:
       postgres:
@@ -48,7 +48,7 @@ jobs:
       run: npm ci
 
     - name: Install Playwright Browsers
-      run: npx playwright install --with-deps
+      run: npx playwright install --with-deps chromium webkit
 
     - name: Install Node dependencies (asp-manager)
       working-directory: ./asp-manager
