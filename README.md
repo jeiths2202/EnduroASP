@@ -67,7 +67,6 @@ EnduroASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적�
 - **Python Service** (포트 3003): Flask 서비스 상태
 - **Refactor Service** (포트 3005): 코드 변환 서비스 상태
 - **Manager Service** (포트 3007): AI 관리 인터페이스 상태
-- **EnduroASP DevOps** (포트 3016): CI/CD & 통합 모니터링 상태
 - **로그 모니터링**: 
   - `/home/aspuser/app/logs/` (메인 로그)
   - `/home/aspuser/app/ofasp-refactor/logs/` (리팩터 로그)
