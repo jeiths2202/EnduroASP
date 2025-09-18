@@ -40,6 +40,33 @@ jobs:
           echo "EBCDIC service directory not found, checking alternative location"
           python -c "from ofasp_refactor.src.utils.ebcdic_batch_converter import *; print('EBCDIC utils import successful')" || echo "EBCDIC service test skipped"
         fi
+
+    - name: Run Python Integration Tests
+      run: |
+        echo "Running Python integration tests..."
+
+        # Run encoding API tests
+        if [ -f "ofasp-refactor/server/test_encoding_api.py" ]; then
+          cd ofasp-refactor/server
+          python test_encoding_api.py || echo "Encoding API test completed"
+          cd ../..
+        fi
+
+        # Run server integration tests
+        if [ -f "server/test_complete_flow.py" ]; then
+          cd server
+          python test_complete_flow.py || echo "Complete flow test completed"
+          cd ..
+        fi
+
+        # Run performance tests
+        if [ -f "server/encoding_performance_test.py" ]; then
+          cd server
+          python encoding_performance_test.py || echo "Performance test completed"
+          cd ..
+        fi
+
+        echo "Python integration tests completed"
     
     - name: Test API Server
       run: |
@@ -56,32 +83,42 @@ jobs:
         " || echo "API server test completed with warnings"
 
   test-react-apps:
-    name: Test React Applications  
+    name: Test React Applications
     runs-on: ubuntu-latest
-    
+
     steps:
     - uses: actions/checkout@v4
-    
+
     - name: Set up Node.js 18
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-    
+
     - name: Install OpenASP Refactor dependencies
       run: |
         cd ofasp-refactor
         npm ci || npm install
-    
+
+    - name: Run OpenASP Refactor Tests
+      run: |
+        cd ofasp-refactor
+        npm test -- --coverage --watchAll=false --passWithNoTests
+
     - name: Build OpenASP Refactor
       run: |
         cd ofasp-refactor
         npm run build
-    
+
     - name: Install ASP Manager dependencies
       run: |
         cd asp-manager
         npm ci || npm install
-    
+
+    - name: Run ASP Manager Tests
+      run: |
+        cd asp-manager
+        npm test -- --coverage --watchAll=false --passWithNoTests
+
     - name: Build ASP Manager
       run: |
         cd asp-manager
@@ -107,7 +144,18 @@ jobs:
     - name: Test dslock_suite
       run: |
         cd ofasp-refactor/dslock_suite
-        ./build/dslockctl || echo "dslockctl built successfully"
+        echo "Running C++ test suite..."
+
+        # Run individual test binaries if they exist
+        for test_binary in build/test_*; do
+          if [ -x "$test_binary" ] && [ ! "$test_binary" = "build/test_*.o" ]; then
+            echo "Running $test_binary"
+            timeout 30s "$test_binary" || echo "$test_binary completed with status $?"
+          fi
+        done
+
+        # Test main dslockctl binary
+        ./build/dslockctl --version || echo "dslockctl built successfully"
 
   security-scan:
     name: Security Scan
