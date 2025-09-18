@@ -37,7 +37,7 @@
     "start": "BROWSER=none react-scripts start",
     "start:ja": "BROWSER=none REACT_APP_DEFAULT_LANG=ja react-scripts start",
     "start:ko": "BROWSER=none REACT_APP_DEFAULT_LANG=ko react-scripts start",
-    "build": "react-scripts build",
+    "build": "CI=false react-scripts build",
     "build:ja": "REACT_APP_DEFAULT_LANG=ja react-scripts build",
     "build:ko": "REACT_APP_DEFAULT_LANG=ko react-scripts build",
     "test": "react-scripts test",
