@@ -49,7 +49,9 @@
       "node_modules/(?!(react-markdown|remark-.*|unified|bail|is-plain-obj|trough|vfile|unist-.*|mdast-.*|micromark.*|decode-named-character-reference|character-entities|property-information|hast-.*|space-separated-tokens|comma-separated-tokens|pretty-bytes|zwitch|longest-streak|ccount|escape-string-regexp|markdown-table|devlop|trim-lines)/)"
     ],
     "moduleNameMapper": {
-      "^react-markdown$": "<rootDir>/src/__mocks__/react-markdown.js"
+      "^react-markdown$": "<rootDir>/src/__mocks__/react-markdown.js",
+      "^remark-gfm$": "<rootDir>/src/__mocks__/remark-gfm.js",
+      "^react-syntax-highlighter$": "<rootDir>/src/__mocks__/react-syntax-highlighter.js"
     }
   },
   "browserslist": {
