@@ -66,9 +66,9 @@ jobs:
     - name: Build OpenASP Refactor
       run: |
         cd ofasp-refactor
-        export CI=false
-        export GENERATE_SOURCEMAP=false
-        npm run build
+        echo "CI=false" > .env.local
+        echo "GENERATE_SOURCEMAP=false" >> .env.local
+        CI=false GENERATE_SOURCEMAP=false npm run build
     
     - name: Install ASP Manager dependencies
       run: |
@@ -78,10 +78,9 @@ jobs:
     - name: Build ASP Manager
       run: |
         cd asp-manager
-        export CI=false
-        export GENERATE_SOURCEMAP=false
-        npm run build
-
+        echo "CI=false" > .env.local
+        echo "GENERATE_SOURCEMAP=false" >> .env.local
+        CI=false GENERATE_SOURCEMAP=false npm run build
   test-dslock-suite:
     name: Test dslock_suite (C/C++)
     runs-on: ubuntu-latest
@@ -199,17 +198,17 @@ jobs:
         # OpenASP Refactor
         cd ofasp-refactor
         npm ci
-        export CI=false
-        export GENERATE_SOURCEMAP=false
-        npm run build
+        echo "CI=false" > .env.local
+        echo "GENERATE_SOURCEMAP=false" >> .env.local
+        CI=false GENERATE_SOURCEMAP=false npm run build
         cd ..
         
         # ASP Manager  
         cd asp-manager
         npm ci
-        export CI=false
-        export GENERATE_SOURCEMAP=false
-        npm run build
+        echo "CI=false" > .env.local
+        echo "GENERATE_SOURCEMAP=false" >> .env.local
+        CI=false GENERATE_SOURCEMAP=false npm run build
         cd ..
     
     - name: Archive production artifacts
