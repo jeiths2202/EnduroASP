@@ -202,13 +202,13 @@ jobs:
       run: |
         # OpenASP Refactor
         cd ofasp-refactor
-        npm ci
+        npm install
         npm run build:prod
         cd ..
 
         # ASP Manager
         cd asp-manager
-        npm ci
+        npm install
         npm run build:prod
         cd ..
     
