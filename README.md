@@ -54,38 +54,6 @@ EnduroASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적�
 - **주요 기능**: Gemma 2B, GPT-OSS 20B 모델 서비스
 - **기술**: Ollama, AI 모델 호스팅
 - **실행**: Chat 서비스를 통해 자동 시작
-
-### 9. [EnduroASP DevOps](./ofasp-devops/) (포트 3016)
-- **목적**: Enterprise급 CI/CD & 자동화 통합 모니터링 플랫폼
-- **주요 기능**: 
-  - COBOL/CL 변환 엔진 (Java, Python, C, Shell)
-  - 9개 전문화된 GitHub Actions CI/CD 워크플로우
-  - 실시간 시스템 모니터링 (CPU, 메모리, 디스크, 네트워크)
-  - **✨ NEW: 인터랙티브 Pipeline Flow 시각화**
-    - 실시간 CI/CD 파이프라인 진행 상황 시각화
-    - 색상별 실패 경로 구분 (Build/Test/Security/Deploy 실패)
-    - 직선 점선으로 각 단계별 복귀 경로 명확 표시
-    - 실시간 상태 업데이트 (5초 간격)
-  - **✨ NEW: ABEND Auto-Fix Integration Test**
-    - 7단계 ABEND 자동 수정 프로세스 시각화
-    - 5-10초 간격 실시간 진행 상황 모니터링
-    - F3 키 수정 → Zabbix 감지 → DevOps 자동 수정 → 검증 전체 과정
-    - test_complete_scenario.sh와 웹 UI 연동
-  - **ABEND 자동 감지 및 수정 시스템**
-  - 알림 시스템 (Critical/High/Medium/Low)
-  - 투자자 시연용 대시보드
-- **기술**: Next.js 14, TypeScript, Docker, GitHub Actions, SVG 시각화
-- **실행**: 
-  ```bash
-  cd ofasp-devops
-  npm run dev  # 개발 모드
-  # 또는
-  docker compose up -d  # Docker 전체 스택
-  ```
-- **모니터링 스택**:
-  - Prometheus (포트 3011): 메트릭 수집
-  - Grafana (포트 3010): 시각화 대시보드 (admin/admin123)
-
 ## 🔍 모니터링 시스템 (Zabbix)
 
 ### 10. [Zabbix 모니터링 시스템] (포트 3015)
