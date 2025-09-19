@@ -159,6 +159,13 @@ jobs:
         echo "Skipping backend services for frontend-focused E2E tests"
         echo "Frontend applications will be started by Playwright webServer config"
 
+    - name: Wait for services to be ready
+      run: |
+        echo "Waiting for frontend services to start..."
+        # Playwright webServer config will handle the waiting
+        # Adding extra time for services to stabilize
+        sleep 5
+
     - name: Run Playwright tests - ${{ matrix.browser }}
       run: npx playwright test --project=${{ matrix.browser }}
       env:

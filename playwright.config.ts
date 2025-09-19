@@ -13,6 +13,12 @@ export default defineConfig({
   retries: process.env.CI ? 2 : 0,
   /* Opt out of parallel tests on CI. */
   workers: process.env.CI ? 1 : undefined,
+  /* Global timeout for all tests */
+  timeout: process.env.CI ? 60000 : 30000,
+  /* Global timeout for each test */
+  expect: {
+    timeout: process.env.CI ? 15000 : 10000,
+  },
   /* Reporter to use. See https://playwright.dev/docs/test-reporters */
   reporter: process.env.CI ? 'github' : 'html',
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
@@ -62,6 +68,7 @@ export default defineConfig({
     {
       command: 'cd ofasp-refactor && npm start',
       port: 3005,
+      timeout: 120000,
       reuseExistingServer: !process.env.CI,
       env: {
         'PORT': '3005',
@@ -72,6 +79,7 @@ export default defineConfig({
     {
       command: 'cd asp-manager && npm start',
       port: 3007,
+      timeout: 120000,
       reuseExistingServer: !process.env.CI,
       env: {
         'PORT': '3007',

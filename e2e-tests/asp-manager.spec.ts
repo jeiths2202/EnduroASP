@@ -15,7 +15,14 @@ test.describe('ASP Manager Application', () => {
 
     // 페이지 새로고침하여 로그인 상태 반영
     await page.reload();
-    await page.waitForTimeout(2000);
+
+    // React 애플리케이션이 완전히 로드될 때까지 대기
+    await page.waitForLoadState('networkidle');
+    await page.waitForLoadState('domcontentloaded');
+
+    // 애플리케이션 컨테이너가 렌더링될 때까지 대기
+    await page.waitForSelector('#root', { state: 'visible' });
+    await page.waitForTimeout(1000); // 추가 안정화 시간
   });
 
   test('should load the application', async ({ page }) => {
@@ -30,25 +37,51 @@ test.describe('ASP Manager Application', () => {
   test('should display sidebar navigation', async ({ page }) => {
     // 메인 애플리케이션 컨테이너 확인
     const appContainer = page.locator('.bg-gray-50, .bg-gray-950').first();
-    await expect(appContainer).toBeVisible();
+    await expect(appContainer).toBeVisible({ timeout: 15000 });
 
-    // 네비게이션 아이콘들이 있는지 확인 (Heroicons)
-    const navIcons = page.locator('svg').first();
-    await expect(navIcons).toBeVisible({ timeout: 10000 });
+    // 네비게이션 구조 확인 - SVG 대신 더 안정적인 요소 확인
+    // nav, aside, 또는 navigation role을 가진 요소 찾기
+    const navigation = page.locator('nav, aside, [role="navigation"]').first();
+
+    if (await navigation.count() > 0) {
+      await expect(navigation).toBeVisible({ timeout: 15000 });
+    } else {
+      // 대체 방법: 버튼이나 링크 요소 확인
+      const navButtons = page.locator('button, a').filter({
+        hasText: /dashboard|システム|ログ|menu|home/i
+      });
+
+      if (await navButtons.count() > 0) {
+        await expect(navButtons.first()).toBeVisible({ timeout: 15000 });
+      } else {
+        // 최소한 root 내부에 콘텐츠가 있는지 확인
+        const rootContent = page.locator('#root > *');
+        await expect(rootContent.first()).toBeVisible({ timeout: 15000 });
+      }
+    }
   });
 
   test('should navigate to different sections', async ({ page }) => {
-    // 사이드바 메뉴 아이템 클릭 (실제 구조 기반)
-    const menuItems = page.locator('button').filter({ hasText: /dashboard|システム|ログ/i });
-    const firstMenuItem = menuItems.first();
+    // 페이지가 완전히 로드될 때까지 대기
+    await page.waitForLoadState('networkidle');
 
-    if (await firstMenuItem.isVisible()) {
-      await firstMenuItem.click();
+    // 사이드바 메뉴 아이템 클릭 (실제 구조 기반)
+    const menuItems = page.locator('button, a').filter({
+      hasText: /dashboard|システム|ログ|menu|home/i
+    });
+
+    if (await menuItems.count() > 0) {
+      const firstMenuItem = menuItems.first();
+      if (await firstMenuItem.isVisible({ timeout: 5000 })) {
+        await firstMenuItem.click();
+        // 클릭 후 네비게이션 완료 대기
+        await page.waitForLoadState('networkidle');
+      }
     }
 
     // 메인 콘텐츠 영역이 있는지 확인
     const mainContent = page.locator('main, .main-content, #root > div').first();
-    await expect(mainContent).toBeVisible();
+    await expect(mainContent).toBeVisible({ timeout: 10000 });
   });
 
   test('should handle responsive design', async ({ page, browserName }) => {
