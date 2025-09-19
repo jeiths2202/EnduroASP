@@ -14,11 +14,11 @@ logger = logging.getLogger(__name__)
 
 # Database connection parameters
 DB_CONFIG = {
-    'host': 'localhost',
-    'database': 'ofasp',
-    'user': 'aspuser',
-    'password': 'aspuser123',
-    'port': 5432
+    'host': os.getenv('DB_HOST', 'localhost'),
+    'database': os.getenv('DB_NAME', 'ofasp'),
+    'user': os.getenv('DB_USER', 'aspuser'),
+    'password': os.getenv('DB_PASSWORD', 'aspuser123'),
+    'port': int(os.getenv('DB_PORT', '5432'))
 }
 
 def get_db_connection():

@@ -28,11 +28,11 @@ class PostgreSQLSessionManager:
         
         # Default database configuration
         self.db_config = db_config or {
-            'host': 'localhost',
-            'port': 5432,
-            'database': 'ofasp',
-            'user': 'aspuser',
-            'password': 'aspuser123'
+            'host': os.getenv('DB_HOST', 'localhost'),
+            'port': int(os.getenv('DB_PORT', '5432')),
+            'database': os.getenv('DB_NAME', 'ofasp'),
+            'user': os.getenv('DB_USER', 'aspuser'),
+            'password': os.getenv('DB_PASSWORD', 'aspuser123')
         }
         
         # Test database connection
