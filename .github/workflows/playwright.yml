@@ -43,11 +43,47 @@ jobs:
       uses: actions/setup-python@v4
       with:
         python-version: '3.10'
+        cache: 'pip'
+
+    # Cache for all npm dependencies
+    - name: Cache node modules
+      uses: actions/cache@v3
+      id: cache-npm
+      with:
+        path: |
+          node_modules
+          asp-manager/node_modules
+          ofasp-refactor/node_modules
+          ~/.npm
+        key: ${{ runner.os }}-npm-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-npm-
+
+    # Cache for Python dependencies
+    - name: Cache pip packages
+      uses: actions/cache@v3
+      with:
+        path: ~/.cache/pip
+        key: ${{ runner.os }}-pip-${{ hashFiles('**/requirements.txt') }}
+        restore-keys: |
+          ${{ runner.os }}-pip-
+
+    # Cache for Playwright browsers
+    - name: Cache Playwright browsers
+      uses: actions/cache@v3
+      id: cache-playwright
+      with:
+        path: /home/runner/.cache/ms-playwright
+        key: ${{ runner.os }}-playwright-${{ hashFiles('**/package-lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-playwright-
 
     - name: Install Node dependencies (root)
+      if: steps.cache-npm.outputs.cache-hit != 'true'
       run: npm ci
 
     - name: Install Playwright Browsers
+      if: steps.cache-playwright.outputs.cache-hit != 'true'
       run: |
         export PLAYWRIGHT_BROWSERS_PATH=/home/runner/.cache/ms-playwright
         npx playwright install chromium
@@ -61,10 +97,12 @@ jobs:
         PLAYWRIGHT_BROWSERS_PATH: /home/runner/.cache/ms-playwright
 
     - name: Install Node dependencies (asp-manager)
+      if: steps.cache-npm.outputs.cache-hit != 'true'
       working-directory: ./asp-manager
       run: npm ci
 
     - name: Install Node dependencies (ofasp-refactor)
+      if: steps.cache-npm.outputs.cache-hit != 'true'
       working-directory: ./ofasp-refactor
       run: npm ci
 
