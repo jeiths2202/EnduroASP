@@ -1,5 +1,6 @@
 ## 개요
-EnduroASP AX는 레거시 ASP(Advanced System Products) 시스템을 현대적인 오픈소스 기술로 마이그레이션하는 통합 플랫폼입니다.
+EnduroASP AX는 기업의 핵심 자산인 레거시 ASP(Advanced System Products) 시스템을 단순한 재호스팅 수준을 넘어, 현대적인 오픈소스 아키텍처 기반으로 완전히 재구성할 수 있도록 지원하는 차세대 통합 마이그레이션 플랫폼입니다.
+이 플랫폼은 수십 년간 축적된 COBOL/ASM/SMED/CL 자산을 자동으로 분석·변환·재배치하며, 기존 비즈니스 로직의 안정성을 유지하면서도 클라우드 네이티브 환경에서 확장 가능한 구조로 탈바꿈시킵니다. 또한, AI 기반 코드 변환 엔진과 **오픈소스 생태계(React, Spring Boot, PostgreSQL, Kubernetes 등)**를 결합하여, 기업이 비용 절감·운영 민첩성·디지털 전환(DX) 가속화를 동시에 달성할 수 있도록 돕습니다.
 
 ### 🧪 CI/CD 테스트 상태
 - ✅ 자동화된 리그레션 테스트 활성화
@@ -565,4 +566,5 @@ tail -f logs/api-server.log
 tail -f ofasp-refactor/logs/chat-api.log
 tail -f ofasp-refactor/logs/ollama.log
 ```
+
 
