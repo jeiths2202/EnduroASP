@@ -1,249 +1,249 @@
-## 개요
-EnduroASP AX는 기업의 핵심 자산인 레거시 ASP(Advanced System Products) 시스템을 단순한 재호스팅 수준을 넘어, 현대적인 오픈소스 아키텍처 기반으로 완전히 재구성할 수 있도록 지원하는 차세대 통합 마이그레이션 플랫폼입니다.
-이 플랫폼은 수십 년간 축적된 COBOL/ASM/SMED/CL 자산을 자동으로 분석·변환·재배치하며, 기존 비즈니스 로직의 안정성을 유지하면서도 클라우드 네이티브 환경에서 확장 가능한 구조로 탈바꿈시킵니다. 또한, AI 기반 코드 변환 엔진과 **오픈소스 생태계(React, Spring Boot, PostgreSQL, Kubernetes 등)**를 결합하여, 기업이 비용 절감·운영 민첩성·디지털 전환(DX) 가속화를 동시에 달성할 수 있도록 돕습니다.
+## Overview
+EnduroASP AX is a next-generation integrated migration platform that supports complete reconstruction of enterprise legacy ASP (Advanced System Products) systems based on modern open-source architecture, going beyond simple re-hosting.
+This platform automatically analyzes, transforms, and redeploys decades of accumulated COBOL/ASM/SMED/CL assets, maintaining the stability of existing business logic while transforming them into scalable structures for cloud-native environments. Additionally, by combining AI-based code conversion engines with the **open-source ecosystem (React, Spring Boot, PostgreSQL, Kubernetes, etc.)**, it helps enterprises achieve cost reduction, operational agility, and accelerated digital transformation (DX) simultaneously.
 
-### 🧪 CI/CD 테스트 상태
-- ✅ 자동화된 리그레션 테스트 활성화
-- ✅ React, Python, C++ 테스트 스위트 포함
-- ✅ 코드 품질 및 보안 스캔 통합
+### 🧪 CI/CD Test Status
+- ✅ Automated regression testing enabled
+- ✅ React, Python, C++ test suites included
+- ✅ Code quality and security scanning integrated
 
-## 🏗️ 프로젝트 구성
+## 🏗️ Project Structure
 
-### 1. [SMED Map Viewer](./) (포트 3000)
-- **목적**: 레거시 SMED 화면 맵 뷰어
-- **주요 기능**: 24x80 터미널 시뮬레이션, 필드 관리, Java 프로그램 연동
-- **기술**: React, TypeScript, CSS Grid
-- **실행**: `npm start`
+### 1. [SMED Map Viewer](./) (Port 3000)
+- **Purpose**: Legacy SMED screen map viewer
+- **Key Features**: 24x80 terminal simulation, field management, Java program integration
+- **Technology**: React, TypeScript, CSS Grid
+- **Run**: `npm start`
 
-### 2. [Python 변환 서비스](./ofasp-refactor/python-service/) (포트 3003)
-- **목적**: EBCDIC/ASCII 변환 백엔드
-- **주요 기능**: RESTful API, SOSI 처리, 배치 최적화
-- **기술**: Python, Flask, Flask-CORS
-- **실행**: `FLASK_PORT=3003 python -c "from src.api.app import api; api.run()"`
+### 2. [Python Conversion Service](./ofasp-refactor/python-service/) (Port 3003)
+- **Purpose**: EBCDIC/ASCII conversion backend
+- **Key Features**: RESTful API, SOSI processing, batch optimization
+- **Technology**: Python, Flask, Flask-CORS
+- **Run**: `FLASK_PORT=3003 python -c "from src.api.app import api; api.run()"`
 
-### 3. [System API Server](./ofasp-refactor/server/) (포트 3004)
-- **목적**: EnduroASP 시스템 관리 API
-- **주요 기능**: 시스템 명령어 처리, 웹 인터페이스 연동
-- **기술**: Python, Flask
-- **실행**: `ASPMGR_WEB_PORT=3004 python aspmgr_web.py`
+### 3. [System API Server](./ofasp-refactor/server/) (Port 3004)
+- **Purpose**: EnduroASP system management API
+- **Key Features**: System command processing, web interface integration
+- **Technology**: Python, Flask
+- **Run**: `ASPMGR_WEB_PORT=3004 python aspmgr_web.py`
 
-### 4. [EnduroASP Refactor](./ofasp-refactor/) (포트 3005)
-- **목적**: 코드 변환 및 리팩토링 도구, 멀티모달 AI 채팅
-- **주요 기능**: 
-  - COBOL/CL 변환, EBCDIC 변환, AI 지원
-  - 멀티모달 AI 채팅 (텍스트, 이미지, 파일 업로드)
-  - RAG 문서 검색 (/ofasp-refactor/public/RAG)
-  - AI 모델 선택 (Gemma 2B, GPT-OSS 20B)
-- **기술**: React, TypeScript, CodeMirror
-- **실행**: `PORT=3005 npm start`
+### 4. [EnduroASP Refactor](./ofasp-refactor/) (Port 3005)
+- **Purpose**: Code conversion and refactoring tool, multimodal AI chat
+- **Key Features**:
+  - COBOL/CL conversion, EBCDIC conversion, AI support
+  - Multimodal AI chat (text, image, file upload)
+  - RAG document search (/ofasp-refactor/public/RAG)
+  - AI model selection (Gemma 2B, GPT-OSS 20B)
+- **Technology**: React, TypeScript, CodeMirror
+- **Run**: `PORT=3005 npm start`
 
-### 5. [Chat API Server](./ofasp-refactor/server/) (포트 3006)
-- **목적**: AI 채팅 백엔드 API
-- **주요 기능**: Ollama 연동, 멀티모달 지원, RAG 문서 검색
-- **기술**: Python, Flask, Ollama API
-- **실행**: `python chat_api.py`
+### 5. [Chat API Server](./ofasp-refactor/server/) (Port 3006)
+- **Purpose**: AI chat backend API
+- **Key Features**: Ollama integration, multimodal support, RAG document search
+- **Technology**: Python, Flask, Ollama API
+- **Run**: `python chat_api.py`
 
-### 6. [ASP Manager](./asp-manager/) (포트 3007)
-- **목적**: AI 기반 시스템 관리 인터페이스
-- **주요 기능**: RAG 문서 검색, 시스템 모니터링, 가상 터미널
-- **기술**: React, TensorFlow.js, Express.js
-- **실행**: `PORT=3007 npm start`
+### 6. [ASP Manager](./asp-manager/) (Port 3007)
+- **Purpose**: AI-based system management interface
+- **Key Features**: RAG document search, system monitoring, virtual terminal
+- **Technology**: React, TensorFlow.js, Express.js
+- **Run**: `PORT=3007 npm start`
 
-### 7. [API Server](./server/) (포트 8000)
-- **목적**: 통합 백엔드 API 서버
-- **주요 기능**: 데이터베이스 연동, 파일 관리, 시스템 통합
-- **기술**: Python, Flask
-- **실행**: `python api_server.py`
+### 7. [API Server](./server/) (Port 8000)
+- **Purpose**: Integrated backend API server
+- **Key Features**: Database integration, file management, system integration
+- **Technology**: Python, Flask
+- **Run**: `python api_server.py`
 
-### 8. [Ollama Server](./ofasp-refactor/) (포트 3014)
-- **목적**: 로컬 AI 모델 서버
-- **주요 기능**: Gemma 2B, GPT-OSS 20B 모델 서비스
-- **기술**: Ollama, AI 모델 호스팅
-- **실행**: Chat 서비스를 통해 자동 시작
-## 🔍 모니터링 시스템 (Zabbix)
+### 8. [Ollama Server](./ofasp-refactor/) (Port 3014)
+- **Purpose**: Local AI model server
+- **Key Features**: Gemma 2B, GPT-OSS 20B model services
+- **Technology**: Ollama, AI model hosting
+- **Run**: Auto-starts through Chat service
+## 🔍 Monitoring System (Zabbix)
 
-### 10. [Zabbix 모니터링 시스템] (포트 3015)
-- **웹 인터페이스**: http://localhost:3015
-- **로그인**: Admin / zabbix
-- **목적**: EnduroASP AX 전체 시스템 모니터링 및 알림
+### 10. [Zabbix Monitoring System] (Port 3015)
+- **Web Interface**: http://localhost:3015
+- **Login**: Admin / zabbix
+- **Purpose**: EnduroASP AX system-wide monitoring and alerts
 
-#### 📊 모니터링 대상
-- **API Server** (포트 8000): HTTP 응답, 프로세스 상태
-- **SMED Viewer** (포트 3000): HTTP 응답, React 앱 상태
-- **Python Service** (포트 3003): Flask 서비스 상태
-- **Refactor Service** (포트 3005): 코드 변환 서비스 상태
-- **Manager Service** (포트 3007): AI 관리 인터페이스 상태
-- **로그 모니터링**: 
-  - `/home/aspuser/app/logs/` (메인 로그)
-  - `/home/aspuser/app/ofasp-refactor/logs/` (리팩터 로그)
-  - **ABEND 로그**: `/home/aspuser/app/logs/abend.log` (ABEND 감지 이력)
-- **dslock_suite**: 파일 락 관리 시스템 상태
-- **ABEND 자동 감지**: CEE3204S 에러 코드 실시간 모니터링
+#### 📊 Monitoring Targets
+- **API Server** (Port 8000): HTTP response, process status
+- **SMED Viewer** (Port 3000): HTTP response, React app status
+- **Python Service** (Port 3003): Flask service status
+- **Refactor Service** (Port 3005): Code conversion service status
+- **Manager Service** (Port 3007): AI management interface status
+- **Log Monitoring**:
+  - `/home/aspuser/app/logs/` (Main logs)
+  - `/home/aspuser/app/ofasp-refactor/logs/` (Refactor logs)
+  - **ABEND Log**: `/home/aspuser/app/logs/abend.log` (ABEND detection history)
+- **dslock_suite**: File lock management system status
+- **ABEND Auto-Detection**: CEE3204S error code real-time monitoring
 
-#### 🔧 Zabbix 구성 요소
+#### 🔧 Zabbix Components
 
-##### PostgreSQL 데이터베이스
+##### PostgreSQL Database
 ```bash
-# 데이터베이스 정보
-호스트: localhost
-포트: 5432
-데이터베이스: zabbix
+# Database Information
+Host: localhost
+Port: 5432
+Database: zabbix
 
-# 주요 테이블
-- users: Zabbix 사용자 정보
-- items: 모니터링 아이템 정의
-- triggers: 알림 트리거 설정
-- history: 모니터링 데이터 히스토리
+# Main Tables
+- users: Zabbix user information
+- items: Monitoring item definitions
+- triggers: Alert trigger settings
+- history: Monitoring data history
 ```
 
-##### Zabbix 서버
+##### Zabbix Server
 ```bash
-# 서비스 관리
+# Service Management
 service zabbix-server start|stop|restart|status
 
-# 설정 파일
+# Configuration File
 /etc/zabbix/zabbix_server.conf
 
-# 로그 파일
+# Log File
 /var/log/zabbix/zabbix_server.log
 
-# 주요 설정
-- 서버 포트: 10051
-- 데이터베이스 연결: PostgreSQL localhost:5432/zabbix
+# Main Settings
+- Server Port: 10051
+- Database Connection: PostgreSQL localhost:5432/zabbix
 ```
 
 ##### Zabbix Agent
 ```bash
-# 서비스 관리
+# Service Management
 service zabbix-agent start|stop|restart|status
 
-# 설정 파일
+# Configuration Files
 /etc/zabbix/zabbix_agentd.conf
-/etc/zabbix/zabbix_agentd.d/EnduroASP.conf  # EnduroASP 커스텀 파라미터
+/etc/zabbix/zabbix_agentd.d/EnduroASP.conf  # EnduroASP custom parameters
 
-# 로그 파일
+# Log File
 /var/log/zabbix/zabbix_agentd.log
 
-# 주요 설정
-- 에이전트 포트: 10050
-- 서버 연결: localhost:10051
+# Main Settings
+- Agent Port: 10050
+- Server Connection: localhost:10051
 ```
 
-##### Nginx 웹 서버
+##### Nginx Web Server
 ```bash
-# 서비스 관리
+# Service Management
 service nginx start|stop|restart|status
 
-# 설정 파일
-/etc/zabbix/nginx.conf           # Zabbix 전용 설정
-/etc/nginx/sites-enabled/zabbix  # Nginx 사이트 설정
+# Configuration Files
+/etc/zabbix/nginx.conf           # Zabbix-specific configuration
+/etc/nginx/sites-enabled/zabbix  # Nginx site configuration
 
-# 로그 파일
+# Log Files
 /var/log/nginx/access.log
 /var/log/nginx/error.log
 
-# 주요 설정
-- 웹 포트: 3015
-- 문서 루트: /usr/share/zabbix
-- PHP-FPM 연결: unix:/var/run/php/zabbix.sock
+# Main Settings
+- Web Port: 3015
+- Document Root: /usr/share/zabbix
+- PHP-FPM Connection: unix:/var/run/php/zabbix.sock
 ```
 
 ##### PHP-FPM
 ```bash
-# 서비스 관리
+# Service Management
 service php8.2-fpm start|stop|restart|status
 
-# 설정 파일
+# Configuration File
 /etc/php/8.2/fpm/pool.d/zabbix.conf
 
-# 로그 파일
+# Log File
 /var/log/php8.2-fpm.log
 
-# 확장 모듈
-- pgsql: PostgreSQL 연결
-- pdo_pgsql: PDO PostgreSQL 드라이버
+# Extension Modules
+- pgsql: PostgreSQL connection
+- pdo_pgsql: PDO PostgreSQL driver
 ```
 
-#### 🎯 커스텀 모니터링 스크립트
+#### 🎯 Custom Monitoring Scripts
 ```bash
-# 스크립트 위치
+# Script Location
 /home/aspuser/app/monitoring/scripts/
 
-# 서비스 상태 확인
-check_services.py  - 모든 EnduroASP 서비스 HTTP 상태 체크
+# Service Status Check
+check_services.py  - All EnduroASP service HTTP status check
 
-# 로그 모니터링
-log_monitor.py     - 오류/경고 로그 감지 및 분석
+# Log Monitoring
+log_monitor.py     - Error/warning log detection and analysis
 
-# dslock 상태 확인
-check_dslock.py    - dslock_suite 상태 및 활성 락 모니터링
+# dslock Status Check
+check_dslock.py    - dslock_suite status and active lock monitoring
 
-# ABEND 자동 감지 및 수정
-check_abend.py     - ABEND CEE3204S 감지 및 자동 수정 트리거
+# ABEND Auto-Detection and Fix
+check_abend.py     - ABEND CEE3204S detection and auto-fix trigger
 
-# 설정 파일
+# Configuration Files
 /home/aspuser/app/monitoring/config/zabbix.conf
-/etc/zabbix/zabbix_agentd.d/EnduroASP.conf  # ABEND 모니터링 파라미터
+/etc/zabbix/zabbix_agentd.d/EnduroASP.conf  # ABEND monitoring parameters
 ```
 
-#### 🚨 알림 설정
-- **서비스 다운**: HTTP 응답 실패 시 즉시 알림
-- **로그 오류**: 로그 파일에서 오류/경고 감지 시 알림
-- **시스템 리소스**: CPU, 메모리, 디스크 임계값 초과 시 알림
-- **dslock 문제**: 파일 락 시스템 오류 시 알림
-- **ABEND 감지**: CEE3204S ABEND 발생 시 즉시 알림 및 자동 수정 트리거
+#### 🚨 Alert Settings
+- **Service Down**: Immediate alert on HTTP response failure
+- **Log Errors**: Alert when errors/warnings detected in log files
+- **System Resources**: Alert when CPU, memory, disk thresholds exceeded
+- **dslock Issues**: Alert on file lock system errors
+- **ABEND Detection**: Immediate alert and auto-fix trigger on CEE3204S ABEND occurrence
 
-#### 🔄 모니터링 주기
-- **서비스 상태**: 60초마다 체크
-- **로그 모니터링**: 300초마다 체크
-- **dslock 상태**: 120초마다 체크
-- **ABEND 감지**: 60초마다 체크 (실시간 대응)
-- **시스템 리소스**: 60초마다 체크
+#### 🔄 Monitoring Intervals
+- **Service Status**: Check every 60 seconds
+- **Log Monitoring**: Check every 300 seconds
+- **dslock Status**: Check every 120 seconds
+- **ABEND Detection**: Check every 60 seconds (real-time response)
+- **System Resources**: Check every 60 seconds
 
-## 🔄 ABEND 자동 감지 및 수정 시스템
+## 🔄 ABEND Auto-Detection and Fix System
 
-### 🎯 통합 테스트 시나리오
-EnduroASP AX 시스템은 **ABEND 발생 → Zabbix 감지 → DevOps CI/CD 자동 수정 → 정상화** 의 완전 자동화된 장애 대응 시스템을 구현합니다.
+### 🎯 Integrated Test Scenario
+EnduroASP AX system implements a fully automated failure response system: **ABEND occurrence → Zabbix detection → DevOps CI/CD auto-fix → Normalization**.
 
-### 📋 ABEND 자동 대응 프로세스
+### 📋 ABEND Auto-Response Process
 
-#### 1️⃣ **ABEND 발생 단계**
-- **트리거**: F3 키 입력 시 MAIN001.java에서 CEE3204S ABEND 발생
-- **위치**: `/home/aspuser/app/volume/DISK01/JAVA/MAIN001.java:handleF3Key()`
-- **로그**: ABEND 정보가 `/home/aspuser/app/logs/abend.log`에 기록
+#### 1️⃣ **ABEND Occurrence Stage**
+- **Trigger**: CEE3204S ABEND occurs in MAIN001.java on F3 key input
+- **Location**: `/home/aspuser/app/volume/DISK01/JAVA/MAIN001.java:handleF3Key()`
+- **Log**: ABEND information recorded in `/home/aspuser/app/logs/abend.log`
 
-#### 2️⃣ **Zabbix 실시간 감지**
-- **감지 스크립트**: `check_abend.py` (60초 주기)
-- **Zabbix 파라미터**: `EnduroASP.abend.check`, `EnduroASP.abend.count`
-- **알림**: Zabbix UI의 "EnduroASP AX" 호스트에서 ABEND 알림 표시
+#### 2️⃣ **Zabbix Real-time Detection**
+- **Detection Script**: `check_abend.py` (60-second interval)
+- **Zabbix Parameters**: `EnduroASP.abend.check`, `EnduroASP.abend.count`
+- **Alert**: ABEND alert displayed in "EnduroASP AX" host on Zabbix UI
 
-#### 3️⃣ **CI/CD 자동 수정 파이프라인**
-- **워크플로우**: ABEND Auto-Fix Pipeline (4단계)
-  1. 🔍 **Detect and Analyze ABEND**: 코드 체크아웃, 로그 분석, 백업 생성
-  2. 🔧 **Auto-Fix ABEND**: F3 키 핸들러 수정, 코드 컴파일, 테스트
-  3. 🚀 **Deploy Fixed Code**: 운영 배포, 서비스 재시작, 배포 검증
-  4. 📢 **Notify Fix Completion**: 수정 결과 로깅, 모니터링 업데이트
+#### 3️⃣ **CI/CD Auto-Fix Pipeline**
+- **Workflow**: ABEND Auto-Fix Pipeline (4 stages)
+  1. 🔍 **Detect and Analyze ABEND**: Code checkout, log analysis, backup creation
+  2. 🔧 **Auto-Fix ABEND**: F3 key handler fix, code compilation, testing
+  3. 🚀 **Deploy Fixed Code**: Production deployment, service restart, deployment verification
+  4. 📢 **Notify Fix Completion**: Fix result logging, monitoring update
 
-#### 4️⃣ **실시간 시각화 모니터링**
+#### 4️⃣ **Real-time Visual Monitoring**
 - **URL**: http://localhost:3016/ (CI/CD Workflow Visualizer)
-- **기능**: 
-  - 실시간 워크플로우 상태 표시
-  - Job 의존성 그래프 시각화
-  - 히스토리 ABEND 카운트 추적
-  - 자동 새로고침 (10초 주기)
+- **Features**:
+  - Real-time workflow status display
+  - Job dependency graph visualization
+  - Historical ABEND count tracking
+  - Auto-refresh (10-second interval)
 
-### 🔧 **구성 파일**
+### 🔧 **Configuration Files**
 ```bash
-# ABEND 모니터링 설정
+# ABEND Monitoring Configuration
 /etc/zabbix/zabbix_agentd.d/EnduroASP.conf
 
-# 감지 스크립트
+# Detection Script
 /home/aspuser/app/monitoring/scripts/check_abend.py
 
-# 자동 수정 대상 파일
+# Auto-Fix Target File
 /home/aspuser/app/volume/DISK01/JAVA/MAIN001.java
 
-# ABEND 로그
+# ABEND Log
 /home/aspuser/app/logs/abend.log
 
 # CI/CD Workflow API
@@ -251,36 +251,36 @@ EnduroASP AX 시스템은 **ABEND 발생 → Zabbix 감지 → DevOps CI/CD 자�
 /home/aspuser/app/ofasp-devops/src/pages/api/abend-status.ts
 ```
 
-### 🧪 **테스트 시나리오 실행**
-1. **MAIN001.java 실행**: F3 키 입력으로 ABEND 발생
-2. **Zabbix 모니터링**: http://localhost:3015 에서 알림 확인
-3. **CI/CD 시각화**: http://localhost:3016 에서 파이프라인 진행 상황 확인
-4. **자동 수정 확인**: F3 키가 정상 동작하는지 검증
+### 🧪 **Test Scenario Execution**
+1. **Run MAIN001.java**: Trigger ABEND with F3 key input
+2. **Zabbix Monitoring**: Check alerts at http://localhost:3015
+3. **CI/CD Visualization**: Monitor pipeline progress at http://localhost:3016
+4. **Auto-Fix Verification**: Verify F3 key works normally
 
-### 📊 **모니터링 지표**
-- **총 ABEND 발생 수**: 과거부터 누적된 전체 ABEND 건수
-- **현재 ABEND 수**: 현재 활성 상태의 ABEND 건수  
-- **워크플로우 상태**: pending → in_progress → completed
-- **자동 수정 성공률**: 수정 완료된 ABEND 비율
+### 📊 **Monitoring Metrics**
+- **Total ABEND Occurrences**: Cumulative ABEND count from history
+- **Current ABEND Count**: Currently active ABEND count
+- **Workflow Status**: pending → in_progress → completed
+- **Auto-Fix Success Rate**: Ratio of successfully fixed ABENDs
 
-## 🚀 빠른 시작
+## 🚀 Quick Start
 
-### 전체 환경 시작
+### Start All Services
 ```bash
 ./master-start.sh
 ```
 
-### 전체 환경 종료
+### Stop All Services
 ```bash
 ./master-stop.sh
 ```
 
-### 개별 서비스 시작
+### Start Individual Services
 ```bash
 # SMED Map Viewer
 npm start
 
-# Python 변환 서비스
+# Python Conversion Service
 cd ofasp-refactor/python-service
 FLASK_PORT=3003 python -c "from src.api.app import api; api.run()"
 
@@ -305,133 +305,133 @@ cd server
 python api_server.py
 ```
 
-### Chat Service 관리
+### Chat Service Management
 ```bash
-# Chat Service 개별 시작
+# Start Chat Service
 cd ofasp-refactor
 ./scripts/chat-start.sh
 
-# Chat Service 개별 종료
+# Stop Chat Service
 ./scripts/chat-stop.sh
 
-# Chat Service 상태 확인
-curl http://localhost:3014/api/tags  # Ollama 모델 목록
-curl http://localhost:3006/api/health # Chat API 상태
+# Check Chat Service Status
+curl http://localhost:3014/api/tags  # Ollama model list
+curl http://localhost:3006/api/health # Chat API status
 ```
 
-## 📋 주요 문서
+## 📋 Key Documentation
 
-- [MASTER_CLAUDE.md](./MASTER_CLAUDE.md) - 전체 프로젝트 작업 히스토리
-- [PROJECT_CONTEXT.json](./PROJECT_CONTEXT.json) - 구조화된 프로젝트 정보
-- [CODING_RULES.md](./ofasp-refactor/CODING_RULES.md) - 개발 규칙 및 표준
-- [CHAT_SERVICE_SCRIPTS.md](./ofasp-refactor/docs/CHAT_SERVICE_SCRIPTS.md) - Chat Service 관리 스크립트 설명서
+- [MASTER_CLAUDE.md](./MASTER_CLAUDE.md) - Complete project work history
+- [PROJECT_CONTEXT.json](./PROJECT_CONTEXT.json) - Structured project information
+- [CODING_RULES.md](./ofasp-refactor/CODING_RULES.md) - Development rules and standards
+- [CHAT_SERVICE_SCRIPTS.md](./ofasp-refactor/docs/CHAT_SERVICE_SCRIPTS.md) - Chat Service management script documentation
 
-## 🧪 테스트
+## 🧪 Testing
 
-### EBCDIC 변환 테스트
+### EBCDIC Conversion Test
 ```bash
 cd ofasp-refactor/python-service
 python convert_file.py /tmp/sample.ebc -e JP -s --sosi-handling space -o /tmp/output.txt
 ```
 
-### 🔄 NEW: DevOps Pipeline API 엔드포인트
+### 🔄 NEW: DevOps Pipeline API Endpoints
 
-#### Pipeline Flow API (포트 3016)
+#### Pipeline Flow API (Port 3016)
 ```bash
-# 실시간 파이프라인 상태 조회
+# Get real-time pipeline status
 GET /api/pipeline-flow-status
-# 응답: 각 노드별 상태, 진행률, 지속시간 정보
+# Response: Status, progress, duration info for each node
 
-# ABEND 테스트 시나리오 상태 조회
+# Get ABEND test scenario status
 GET /api/abend-test-scenario
-# 응답: 7단계 테스트 진행 상황, 현재 단계, 전체 상태
+# Response: 7-stage test progress, current stage, overall status
 
-# ABEND 테스트 시나리오 시작
+# Start ABEND test scenario
 POST /api/abend-test-scenario?action=start
-# 기능: test_complete_scenario.sh 연동하여 실제 ABEND 자동 수정 프로세스 실행
+# Function: Execute actual ABEND auto-fix process via test_complete_scenario.sh
 
-# 단계별 상태 업데이트 (스크립트에서 호출)
+# Update step-by-step status (called from script)
 POST /api/abend-test-scenario?action=update
-# 바디: { "stepId": "f3-check", "status": "success", "message": "..." }
+# Body: { "stepId": "f3-check", "status": "success", "message": "..." }
 ```
 
-#### 사용 예시
+#### Usage Examples
 ```bash
-# Pipeline 상태 확인
+# Check Pipeline status
 curl http://localhost:3016/api/pipeline-flow-status
 
-# ABEND 테스트 상태 확인
+# Check ABEND test status
 curl http://localhost:3016/api/abend-test-scenario
 
-# ABEND 테스트 시작 (실제 test_complete_scenario.sh 실행)
+# Start ABEND test (executes actual test_complete_scenario.sh)
 curl -X POST http://localhost:3016/api/abend-test-scenario?action=start
 ```
 
-### API 상태 확인
+### API Status Check
 ```bash
 curl http://localhost:3000         # SMED Viewer
-curl http://localhost:3003/health  # Python 변환 서비스
+curl http://localhost:3003/health  # Python Conversion Service
 curl http://localhost:3004         # System API Server
 curl http://localhost:3005         # EnduroASP Refactor
 curl http://localhost:3006/api/health # Chat API Server
 curl http://localhost:3007         # ASP Manager
 curl http://localhost:8000         # API Server
 curl http://localhost:3014/api/tags # Ollama Server
-curl http://localhost:3015         # Zabbix 모니터링
+curl http://localhost:3015         # Zabbix Monitoring
 curl http://localhost:3016         # EnduroASP DevOps (CI/CD Workflow Visualizer)
 curl http://localhost:3011         # Prometheus
 curl http://localhost:3010         # Grafana
 ```
 
-### Zabbix 모니터링 상태 확인
+### Zabbix Monitoring Status Check
 ```bash
-# 서비스 상태
+# Service Status
 service zabbix-server status
-service zabbix-agent status  
+service zabbix-agent status
 service nginx status
 service php8.2-fpm status
 service postgresql status
 
-# 모니터링 스크립트 테스트
+# Monitoring Script Tests
 python3 /home/aspuser/app/monitoring/scripts/check_services.py --json
 python3 /home/aspuser/app/monitoring/scripts/log_monitor.py --json
 python3 /home/aspuser/app/monitoring/scripts/check_dslock.py --json
-python3 /home/aspuser/app/monitoring/scripts/check_abend.py --json  # ABEND 감지 테스트
+python3 /home/aspuser/app/monitoring/scripts/check_abend.py --json  # ABEND detection test
 
-# Zabbix Agent 파라미터 테스트
+# Zabbix Agent Parameter Tests
 zabbix_agentd -t EnduroASP.services.check
 zabbix_agentd -t EnduroASP.service.api
 zabbix_agentd -t EnduroASP.service.smed
-zabbix_agentd -t EnduroASP.abend.check      # ABEND 감지 파라미터 테스트
-zabbix_agentd -t EnduroASP.abend.count      # ABEND 카운트 파라미터 테스트
+zabbix_agentd -t EnduroASP.abend.check      # ABEND detection parameter test
+zabbix_agentd -t EnduroASP.abend.count      # ABEND count parameter test
 
-# 데이터베이스 접속
+# Database Access
 su - postgres -c "psql zabbix"
 ```
 
-## 🔧 개발 환경
+## 🔧 Development Environment
 
-### 필수 요구사항
+### Requirements
 - Node.js 18+
 - Python 3.10+
-- npm 또는 yarn
+- npm or yarn
 
-### 서비스 포트 구성
-- 3000: SMED Map Viewer (화면 맵 뷰어)
-- 3003: Python EBCDIC 변환 서비스
-- 3005: EnduroASP Refactor 메인
+### Service Port Configuration
+- 3000: SMED Map Viewer (Screen map viewer)
+- 3003: Python EBCDIC conversion service
+- 3005: EnduroASP Refactor main
 - 3007: ASP Manager
-- 3008: ASP Manager 백엔드
-- 3010: Grafana (모니터링 시각화)
-- 3011: Prometheus (메트릭 수집)
-- 3014: Ollama Server (AI 모델)
-- 3015: Zabbix (시스템 모니터링)
-- 3016: EnduroASP DevOps (CI/CD & 모니터링)
-- 8000: API Server (통합 백엔드)
+- 3008: ASP Manager backend
+- 3010: Grafana (Monitoring visualization)
+- 3011: Prometheus (Metrics collection)
+- 3014: Ollama Server (AI models)
+- 3015: Zabbix (System monitoring)
+- 3016: EnduroASP DevOps (CI/CD & Monitoring)
+- 8000: API Server (Integrated backend)
 
-### 환경 변수
+### Environment Variables
 ```bash
-# Python 변환 서비스
+# Python Conversion Service
 FLASK_PORT=3003
 REACT_APP_PYTHON_CONVERTER_URL=http://localhost:3003
 CODEPAGE_BASE_PATH=/home/aspuser/app/ofasp-refactor/public/codepages
@@ -458,27 +458,27 @@ OLLAMA_HOST=http://0.0.0.0:3014
 OLLAMA_MODELS=/home/aspuser/.ollama/models
 ```
 
-### 문자 인코딩 및 국제화 규칙
+### Character Encoding and Internationalization Rules
 
-#### SJIS 인코딩 사용
-- **일본어 환경 지원**: ja_JP.sjis 로케일 환경에서의 호환성을 위해 스크립트 파일은 SHIFT_JIS 인코딩으로 작성해야 합니다.
-- **적용 대상**: Shell 스크립트 (.sh), 배치 파일, 설정 파일 등 시스템 레벨 파일
-- **변환 방법**: UTF-8로 작성 후 SHIFT_JIS로 변환 (이모지 제거 필요)
+#### SJIS Encoding Usage
+- **Japanese Environment Support**: Script files must be written in SHIFT_JIS encoding for compatibility with ja_JP.sjis locale environment.
+- **Applicable To**: Shell scripts (.sh), batch files, configuration files, and other system-level files
+- **Conversion Method**: Write in UTF-8 first, then convert to SHIFT_JIS (emoji removal required)
 
-#### 이모지 사용 금지
-- **모든 소스 코드**: 소스 코드, 주석, 문서에서 이모지 사용을 금지합니다.
-- **대체 표기**: 이모지 대신 ASCII 문자 조합을 사용합니다.
+#### Emoji Usage Prohibition
+- **All Source Code**: Emojis are prohibited in source code, comments, and documentation.
+- **Alternative Notation**: Use ASCII character combinations instead of emojis.
   ```bash
-  # 금지: 🚀 시작, ✅ 성공, ❌ 실패, 📝 메모, 🔧 설정
-  # 권장: [START], [OK], [NG], [NOTE], [CONFIG]
+  # Prohibited: 🚀 Start, ✅ Success, ❌ Failure, 📝 Note, 🔧 Config
+  # Recommended: [START], [OK], [NG], [NOTE], [CONFIG]
   ```
-- **예외 사항**: UI 텍스트에서는 사용자 경험을 위해 제한적 허용
-- **이유**: 
-  - SHIFT_JIS 인코딩에서 이모지 지원 불가
-  - 크로스 플랫폼 호환성 보장
-  - 코드 가독성 및 전문성 유지
+- **Exception**: Limited use allowed in UI text for user experience
+- **Reasons**:
+  - Emojis not supported in SHIFT_JIS encoding
+  - Ensures cross-platform compatibility
+  - Maintains code readability and professionalism
 
-#### 주석 작성 가이드라인
+#### Comment Writing Guidelines
 ```python
 # English comments only - all source code comments must be in English
 def process_data(input_file):
@@ -504,9 +504,9 @@ def process_data(input_file):
     return result
 ```
 
-#### 인코딩 변환 예시
+#### Encoding Conversion Example
 ```bash
-# UTF-8 → SHIFT_JIS 변환 (이모지 제거 포함)
+# UTF-8 → SHIFT_JIS conversion (including emoji removal)
 python3 -c "
 with open('script.sh', 'r', encoding='utf-8') as f:
     content = f.read()
@@ -517,38 +517,38 @@ with open('script.sh', 'w', encoding='shift_jis') as f:
 "
 ```
 
-## 📁 디렉토리 구조
+## 📁 Directory Structure
 ```
 /home/aspuser/app/
-├── ofasp-refactor/          # 메인 리팩토링 플랫폼
-│   ├── src/                 # React 소스 코드
-│   ├── python-service/      # Python 백엔드
-│   └── public/             # 정적 리소스
-├── asp-manager/            # AI 관리 인터페이스
-│   ├── src/                # React 소스 코드
-│   └── server.js          # Express 프록시
-├── server/                 # 백엔드 서비스
-│   └── aspmgr/            # Curses 시스템 관리자
-├── master-start.sh        # 전체 시작 스크립트
-└── master-stop.sh         # 전체 종료 스크립트
+├── ofasp-refactor/          # Main refactoring platform
+│   ├── src/                 # React source code
+│   ├── python-service/      # Python backend
+│   └── public/             # Static resources
+├── asp-manager/            # AI management interface
+│   ├── src/                # React source code
+│   └── server.js          # Express proxy
+├── server/                 # Backend services
+│   └── aspmgr/            # Curses system manager
+├── master-start.sh        # Start all services script
+└── master-stop.sh         # Stop all services script
 ```
 
-## 📋 개발 규칙 및 가이드라인
+## 📋 Development Rules and Guidelines
 
-### 국제화 지원
-- **로케일 지원**: ja_JP.sjis, en_US.UTF-8
-- **메시지 표시**: 환경에 따른 인코딩 자동 감지
-- **폰트 지원**: 일본어 표시 가능한 터미널 폰트 사용
+### Internationalization Support
+- **Locale Support**: ja_JP.sjis, en_US.UTF-8
+- **Message Display**: Automatic encoding detection based on environment
+- **Font Support**: Use terminal fonts that can display Japanese
 
-### 주요 명령어
+### Key Commands
 ```bash
-# 전체 환경 관리
-./master-start.sh    # 모든 서비스 시작
-./master-stop.sh     # 모든 서비스 정지
+# Environment Management
+./master-start.sh    # Start all services
+./master-stop.sh     # Stop all services
 
-# 개별 서비스 확인
+# Check Individual Services
 curl http://localhost:3000  # SMED Map Viewer
-curl http://localhost:3003  # Python 변환 서비스  
+curl http://localhost:3003  # Python Conversion Service
 curl http://localhost:3004  # System API Server
 curl http://localhost:3005  # EnduroASP Refactor
 curl http://localhost:3006  # Chat API Server
@@ -556,7 +556,7 @@ curl http://localhost:3007  # ASP Manager
 curl http://localhost:8000  # API Server
 curl http://localhost:3014  # Ollama Server
 
-# 로그 확인
+# Check Logs
 tail -f logs/smed-viewer.log
 tail -f logs/python-service.log
 tail -f logs/system-api.log
